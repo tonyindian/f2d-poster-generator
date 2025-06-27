@@ -469,6 +469,7 @@
         </div>
     </main>
 
+    <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
     <script type="module">
         // Modern ES2025 Auth0 Integration
         class AuthManager {
@@ -489,9 +490,8 @@
             
             async #initializeAuth() {
                 try {
-                    // Dynamic import for better performance
-                    const { createAuth0Client } = await import('https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js');
-                    this.#auth0Client = await createAuth0Client(this.#config);
+                    // Use globally loaded Auth0
+                    this.#auth0Client = await auth0.createAuth0Client(this.#config);
                     
                     // Check if already authenticated
                     if (await this.#auth0Client.isAuthenticated()) {
@@ -589,13 +589,6 @@
             document.addEventListener('DOMContentLoaded', () => new AuthManager());
         } else {
             new AuthManager();
-        }
-        
-        // Service Worker registration for offline support
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js').catch(error => {
-                console.log('Service Worker registration failed:', error);
-            });
         }
     </script>
 </body>
