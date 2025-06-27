@@ -38,30 +38,42 @@ function toItalic(text) {
     return text.split('').map(char => UNICODE_ITALIC[char] || char).join('');
 }
 
-// ROBUSTE FINE TO DINE Post Unicode-Formatierung
+// FINALE ROBUSTE FINE TO DINE Post Unicode-Formatierung
 function applyFineToDineFormatting(text) {
     let formatted = text.trim();
     
-    // 1. TITEL-ERKENNUNG (robuste Methoden)
+    // SCHRITT 0: Markdown-Bereinigung (Claude generiert oft **bold** markdown)
+    formatted = formatted.replace(/\*\*(.*?)\*\*/g, '$1'); // **text** → text
+    formatted = formatted.replace(/\*(.*?)\*/g, '$1');     // *text* → text
+    
+    // SCHRITT 1: TITEL-FORMATIERUNG (erste Zeile als Bold)
     const lines = formatted.split('\n');
     if (lines.length > 0) {
         const firstLine = lines[0].trim();
         if (firstLine.length > 0) {
-            // Erste Zeile ist der Titel - formatiere als Bold
             const boldTitle = toBold(firstLine);
-            formatted = formatted.replace(firstLine, boldTitle);
+            // Erste Zeile exakt ersetzen
+            lines[0] = boldTitle;
+            formatted = lines.join('\n');
         }
     }
     
-    // 2. CTA-ERKENNUNG (flexible Suche nach "Erlebe")
-    const erlebeRegex = /(.*)Erlebe([^\n#]*)/gm;
-    formatted = formatted.replace(erlebeRegex, (match, prefix, ctaContent) => {
-        // Nur den "Erlebe..."-Teil italic machen, Prefix beibehalten
-        const italicCta = toItalic('Erlebe' + ctaContent);
-        return prefix + italicCta;
+    // SCHRITT 2: CTA-FORMATIERUNG (Zeilen die "Erlebe" enthalten)
+    const processedLines = formatted.split('\n').map(line => {
+        // Suche nach Zeilen die "Erlebe" enthalten
+        if (line.includes('Erlebe')) {
+            // Finde "Erlebe" Position und formatiere von dort bis Zeilenende
+            const erlebeIndex = line.indexOf('Erlebe');
+            if (erlebeIndex !== -1) {
+                const beforeErlebe = line.substring(0, erlebeIndex);
+                const erlebeAndAfter = line.substring(erlebeIndex);
+                return beforeErlebe + toItalic(erlebeAndAfter);
+            }
+        }
+        return line;
     });
     
-    return formatted;
+    return processedLines.join('\n');
 }
 
 exports.handler = async (event, context) => {
@@ -108,6 +120,7 @@ STIL-REGELN:
 - Sprache: Emotionale Adjektive, konkrete Details
 - Struktur: Personen/Geschichte, dann Besonderheiten, dann Details
 - Call-to-Action muss mit "Erlebe" beginnen
+- WICHTIG: Verwende KEIN Markdown (**bold** oder *italic*) - nur normalen Text!
 
 BEISPIEL-STRUKTUR:
 Restaurant Truube Gais - Bodenständigkeit mit Michelin-Stern!
@@ -119,7 +132,7 @@ Erlebe weltoffene Bodenständigkeit auf Sterne-Niveau mit deinem FINE TO DINE Gu
 
 ARTIKEL: ${magazinText}
 
-Erstelle den Post mit dieser exakten Struktur:`;
+Erstelle den Post mit dieser exakten Struktur (nur plain text, kein Markdown):`;
 
         // STEP 1: Claude generiert Content
         const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -146,7 +159,7 @@ Erstelle den Post mit dieser exakten Struktur:`;
         const data = await response.json();
         const rawContent = data.content[0].text;
 
-        // STEP 2: JavaScript wendet zuverlässige UnicodeFormatierung an
+        // STEP 2: JavaScript wendet zuverlässige Unicode-Formatierung an
         const formattedContent = applyFineToDineFormatting(rawContent);
         
         return {
