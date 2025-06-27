@@ -475,12 +475,14 @@
         class AuthManager {
             #auth0Client = null;
             #config = {
-                domain: 'dev-j7lkspndihsozye4.eu.auth0.com',
-                clientId: 'a8wqmdKF8OgorCzddR6mFmdSdQCf0vmq',
-                authorizationParams: {
-                    redirect_uri: `${window.location.origin}/app/`,
-                }
-            };
+    domain: 'dev-j7lkspndihsozye4.eu.auth0.com',
+    clientId: 'a8wqmdKF8OgorCzddR6mFmdSdQCf0vmq',
+    authorizationParams: {
+        redirect_uri: `${window.location.origin}/app/`,
+    },
+    cacheLocation: 'localstorage',
+    useRefreshTokens: true
+};
             
             constructor() {
                 this.#initializeAuth();
