@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "FINE TO DINE Post Generator",
   "dependencies": {
+    "@auth0/auth0-spa-js": "^2.2.0",
     "node-fetch": "^2.6.7"
   }
 }
