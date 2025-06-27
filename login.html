@@ -489,7 +489,7 @@
             
             async #initializeAuth() {
                 try {
-                    // Use globally loaded Auth0
+                    // Use globaly loaded Auth0
                     this.#auth0Client = await auth0.createAuth0Client(this.#config);
                     
                     // Check if already authenticated
