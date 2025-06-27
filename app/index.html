@@ -717,7 +717,7 @@
 
     <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
     <script type="module">
-        // Modern ES2025 Protected App with Auth0
+        // FIXED: Auth0 State Problem gelöst
         class ProtectedApp {
             #auth0Client = null;
             #user = null;
@@ -726,7 +726,10 @@
                 clientId: 'a8wqmdKF8QgorCzddR6mFmdSdQCf0vma',
                 authorizationParams: {
                     redirect_uri: `${window.location.origin}/app/`
-                }
+                },
+                // CRITICAL: Cache location für State persistence
+                cacheLocation: 'localstorage',
+                useRefreshTokens: true
             };
             
             constructor() {
@@ -736,34 +739,72 @@
             
             async #initializeAuth() {
                 try {
-                    this.#auth0Client = await auth0.createAuth0Client(this.#config);
+                    console.log('🚀 Starting app initialization...');
+                    console.log('Current URL:', window.location.href);
                     
-                    // Handle OAuth callback
+                    this.#auth0Client = await auth0.createAuth0Client(this.#config);
+                    console.log('✅ Auth0 client created');
+                    
+                    // Handle OAuth callback mit verbesserter Error-Behandlung
                     if (window.location.search.includes('code=')) {
-                        await this.#handleCallback();
+                        console.log('🔄 Handling OAuth callback...');
+                        try {
+                            await this.#auth0Client.handleRedirectCallback();
+                            console.log('✅ Callback handled successfully');
+                            // Clean URL after successful callback
+                            window.history.replaceState({}, document.title, window.location.pathname);
+                        } catch (callbackError) {
+                            console.error('❌ Callback handling failed:', callbackError);
+                            
+                            // Bei State-Error: Force neu-authentifizierung
+                            if (callbackError.message.includes('Invalid state') || callbackError.message.includes('state')) {
+                                console.log('🔧 State error detected - forcing re-authentication');
+                                // URL cleanen
+                                window.history.replaceState({}, document.title, window.location.pathname);
+                                // Cache clearen
+                                await this.#clearAuth0Cache();
+                                // Force login
+                                this.#redirectToLogin();
+                                return;
+                            }
+                            throw callbackError;
+                        }
                     }
                     
-                    // Check authentication
+                    // Check authentication status
+                    console.log('🔐 Checking authentication status...');
                     if (await this.#auth0Client.isAuthenticated()) {
+                        console.log('✅ User is authenticated');
                         this.#user = await this.#auth0Client.getUser();
                         this.#showApp();
                     } else {
+                        console.log('❌ User not authenticated - redirecting to login');
                         this.#redirectToLogin();
                     }
                 } catch (error) {
-                    console.error('Auth0 initialization failed:', error);
+                    console.error('💥 Auth0 initialization failed:', error);
+                    await this.#clearAuth0Cache();
                     this.#redirectToLogin();
                 }
             }
             
-            async #handleCallback() {
+            async #clearAuth0Cache() {
                 try {
-                    await this.#auth0Client.handleRedirectCallback();
-                    // Clean URL after callback
-                    window.history.replaceState({}, document.title, window.location.pathname);
+                    // Auth0 cache clearen
+                    const auth0Keys = Object.keys(localStorage).filter(key => 
+                        key.startsWith('@@auth0spajs@@') || key.includes('auth0')
+                    );
+                    auth0Keys.forEach(key => localStorage.removeItem(key));
+                    
+                    // Session storage auch clearen
+                    const sessionKeys = Object.keys(sessionStorage).filter(key => 
+                        key.startsWith('@@auth0spajs@@') || key.includes('auth0')
+                    );
+                    sessionKeys.forEach(key => sessionStorage.removeItem(key));
+                    
+                    console.log('🧹 Auth0 cache cleared');
                 } catch (error) {
-                    console.error('Callback handling failed:', error);
-                    this.#redirectToLogin();
+                    console.error('Error clearing cache:', error);
                 }
             }
             
@@ -795,7 +836,8 @@
             
             #bindEvents() {
                 // Logout functionality
-                document.getElementById('logoutButton')?.addEventListener('click', () => {
+                document.getElementById('logoutButton')?.addEventListener('click', async () => {
+                    await this.#clearAuth0Cache();
                     this.#auth0Client?.logout({
                         logoutParams: {
                             returnTo: `${window.location.origin}/login.html`
