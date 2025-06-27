@@ -715,6 +715,7 @@
         </div>
     </div>
 
+    <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
     <script type="module">
         // Modern ES2025 Protected App with Auth0
         class ProtectedApp {
@@ -724,8 +725,7 @@
                 domain: 'dev-j7lkspndihsozye4.auth0.com',
                 clientId: 'a8wqmdKF8QgorCzddR6mFmdSdQCf0vma',
                 authorizationParams: {
-                    redirect_uri: `${window.location.origin}/app/`,
-                    audience: 'https://dev-j7lkspndihsozye4.auth0.com/api/v2/'
+                    redirect_uri: `${window.location.origin}/app/`
                 }
             };
             
@@ -736,9 +736,7 @@
             
             async #initializeAuth() {
                 try {
-                    // Dynamic import for performance
-                    const { createAuth0Client } = await import('https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js');
-                    this.#auth0Client = await createAuth0Client(this.#config);
+                    this.#auth0Client = await auth0.createAuth0Client(this.#config);
                     
                     // Handle OAuth callback
                     if (window.location.search.includes('code=')) {
@@ -927,13 +925,6 @@
             document.addEventListener('DOMContentLoaded', () => new ProtectedApp());
         } else {
             new ProtectedApp();
-        }
-        
-        // Service Worker for offline support
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js').catch(error => {
-                console.log('Service Worker registration failed:', error);
-            });
         }
     </script>
 </body>
