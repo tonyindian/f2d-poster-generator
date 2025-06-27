@@ -1,0 +1,8 @@
+{
+  "name": "f2d-sociall-poster",
+  "version": "1.0.0",
+  "description": "FINE TO DINE Post Generator",
+  "dependencies": {
+    "node-fetch": "^2.6.7"
+  }
+}
