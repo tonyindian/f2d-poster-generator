@@ -6,7 +6,12 @@
     --ftd-primary: #8B2252;         /* Original FINE TO DINE Burgundy */
     --ftd-primary-variant: #A8325F;  /* Heller Burgundy */
     --ftd-primary-dark: #6B1A3F;    /* Dunkler Burgundy */
-    
+    /* 🎨 NEUE: Material 3 Expressive Gradients */
+    --ftd-gradient-primary: linear-gradient(135deg, #8B2252 0%, #A8325F 50%, #C44370 100%);
+    --ftd-gradient-surface: linear-gradient(135deg, #FFFFFF 0%, #FEFEFE 50%, #FCFCFC 100%);
+    --ftd-gradient-accent: linear-gradient(135deg, #F5F4F2 0%, #FAFAF9 50%, #FFFFFF 100%);
+    --ftd-gradient-subtle: linear-gradient(135deg, rgba(139, 34, 82, 0.08) 0%, rgba(168, 50, 95, 0.05) 100%);
+
     /* Schweizer Quiet Luxury - subtile Akzente statt "neureich" */
     --swiss-stone: #F5F4F2;         /* Warmer Schweizer Kalkstein */
     --swiss-linen: #FAFAF9;         /* Natürliches Leinen */

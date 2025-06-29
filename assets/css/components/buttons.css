@@ -24,8 +24,7 @@
     position: relative;
     overflow: hidden;
     box-shadow: var(--elevation-3);
-    min-height: 3.5rem;
-}
+    min-height: 3.75rem;  /* 60px - M3 Expressive optimal */}
 
 /* Material 3 Expressive: Shimmer effect */
 .btn-primary::before {
@@ -65,7 +64,7 @@
 
 /* === SECONDARY BUTTONS === */
 .btn-secondary {
-    background: rgba(255, 255, 255, 0.9);
+    background: var(--ftd-gradient-accent);
     color: var(--ftd-primary);
     border: 2px solid var(--ftd-primary);
     padding: var(--space-12) var(--space-24);
@@ -90,9 +89,10 @@
 }
 
 .btn-secondary.primary {
-    background: var(--swiss-stone);
+    background: var(--ftd-gradient-surface);
     color: var(--ftd-primary);
     border: 1px solid rgba(139, 34, 82, 0.2);
+    box-shadow: 0 2px 8px rgba(139, 34, 82, 0.1);
 }
 
 .btn-secondary.primary:hover {
@@ -120,7 +120,7 @@
     justify-content: center;
     gap: var(--space-12);
     width: 100%;
-    min-height: 3.5rem;
+    min-height: 3.75rem;  /* 60px - Touch-optimiert */
     box-shadow: var(--elevation-2);
     position: relative;
     overflow: hidden;
@@ -225,4 +225,56 @@
     30% { transform: scale(1.08) rotate(1deg); }
     60% { transform: scale(0.95) rotate(-0.5deg); }
     100% { transform: scale(1) rotate(0deg); }
+}
+
+/* === EXPRESSIVE HERO BUTTON === */
+.btn-primary-hero {
+    background: var(--ftd-gradient-primary);
+    color: var(--neutral-100);
+    border: none;
+    padding: var(--space-24) var(--space-40);
+    border-radius: var(--shape-extra-large);
+    font-family: var(--font-ui);
+    font-size: var(--text-title-medium);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 400ms var(--motion-spring);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-16);
+    width: 100%;
+    min-height: 4rem;
+    box-shadow: var(--elevation-4);
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.btn-primary-hero:hover:not(:disabled) {
+    transform: translateY(-8px) scale(1.08);
+    box-shadow: var(--elevation-5), 0 0 32px rgba(139, 34, 82, 0.4);
+    animation: hero-pulse 1.2s var(--motion-elastic);
+}
+
+@keyframes hero-pulse {
+    0% { box-shadow: var(--elevation-4), 0 0 0 rgba(139, 34, 82, 0.4); }
+    50% { box-shadow: var(--elevation-5), 0 0 40px rgba(139, 34, 82, 0.6); }
+    100% { box-shadow: var(--elevation-5), 0 0 32px rgba(139, 34, 82, 0.4); }
+}
+
+/* === MOBILE TAP TARGET OPTIMIZATION === */
+@media (max-width: 640px) {
+    .btn-primary,
+    .auth-button,
+    .btn-primary-hero {
+        min-height: 4rem;  /* 64px - Extra groß für Mobile */
+        padding: var(--space-20) var(--space-32);
+    }
+    
+    .btn-secondary {
+        min-height: 3rem;  /* 48px - WCAG minimum */
+        padding: var(--space-16) var(--space-24);
+    }
 }

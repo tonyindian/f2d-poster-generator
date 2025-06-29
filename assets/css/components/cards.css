@@ -3,7 +3,7 @@
 
 /* === GLASMORPHISM CARDS === */
 .card {
-    background: var(--surface-primary);
+    background: var(--ftd-gradient-surface);
     backdrop-filter: blur(24px);
     border-radius: var(--shape-extra-large);
     padding: var(--space-40);
@@ -264,7 +264,7 @@
 
 /* === CARD CONTENT === */
 .result-content {
-    background: rgba(255, 255, 255, 0.9);
+    background: var(--ftd-gradient-accent);
     backdrop-filter: blur(8px);
     border-radius: var(--shape-large);
     padding: var(--space-32);
