@@ -16,7 +16,7 @@
     font-weight: 600;
     cursor: pointer;
     margin-top: var(--space-24);
-    transition: all var(--motion-duration-medium3) var(--motion-easing-emphasized);
+    transition: all 400ms var(--motion-spring);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -47,8 +47,9 @@
 }
 
 .btn-primary:hover:not(:disabled) {
-    transform: translateY(-4px) scale(1.02);
+    transform: translateY(-6px) scale(1.05);
     box-shadow: var(--elevation-5);
+    animation: button-spring 0.6s var(--motion-bounce);
 }
 
 .btn-primary:active {
@@ -194,4 +195,34 @@
 
 .auth-button-icon {
     font-size: 1.25rem;
+}
+
+/* === MATERIAL 3 EXPRESSIVE SPRING ANIMATIONS === */
+@keyframes button-spring {
+    0% { transform: translateY(-4px) scale(1.02); }
+    50% { transform: translateY(-8px) scale(1.08); }
+    100% { transform: translateY(-6px) scale(1.05); }
+}
+
+@keyframes card-entrance {
+    0% { 
+        opacity: 0;
+        transform: translateY(40px) scale(0.95);
+    }
+    60% { 
+        opacity: 1;
+        transform: translateY(-8px) scale(1.02);
+    }
+    100% { 
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Success Animation mit Spring */
+@keyframes success-spring {
+    0% { transform: scale(1); }
+    30% { transform: scale(1.08) rotate(1deg); }
+    60% { transform: scale(0.95) rotate(-0.5deg); }
+    100% { transform: scale(1) rotate(0deg); }
 }

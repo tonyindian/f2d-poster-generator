@@ -83,15 +83,18 @@ p, h1, h2, h3, h4, h5, h6 {
     }
 }
 
-/* === FOCUS INDICATORS === */
+/* === WCAG 2.2 COMPLIANT FOCUS INDICATORS === */
 .btn-primary:focus-visible,
 .btn-secondary:focus-visible,
-.logout-button:focus-visible {
-    outline: 3px solid var(--swiss-charcoal);
+.logout-button:focus-visible,
+.auth-button:focus-visible {
+    outline: 3px solid var(--focus-indicator);
     outline-offset: 2px;
+    box-shadow: 0 0 0 6px rgba(0, 102, 204, 0.2);
 }
 
 .form-textarea:focus-visible {
-    outline: 3px solid var(--swiss-charcoal);
+    outline: 3px solid var(--focus-indicator);
     outline-offset: 2px;
+    box-shadow: 0 0 0 6px rgba(0, 102, 204, 0.2);
 }

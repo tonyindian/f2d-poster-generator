@@ -80,13 +80,14 @@
 /* === RESULT CARD === */
 .result-card {
     opacity: 0;
-    transform: translateY(20px);
-    transition: all 500ms var(--motion-easing-emphasized-accelerate);
+    transform: translateY(40px) scale(0.95);
+    transition: all 600ms var(--motion-spring);
 }
 
 .result-card.visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
+    animation: card-entrance 0.8s var(--motion-bounce);
 }
 
 /* === CARD HEADERS === */
@@ -270,8 +271,9 @@
     border: 1px solid rgba(255, 255, 255, 0.3);
     min-height: 400px;
     font-family: var(--font-ui);
-    line-height: 1.7;
-    color: var(--neutral-900);
+    font-size: var(--text-body-large);    /* Explicit größere Schrift */
+    line-height: var(--line-height-relaxed); /* WCAG Standard */
+    color: var(--text-primary);           /* High contrast */
     white-space: pre-wrap;
     margin-bottom: var(--space-24);
     transition: all var(--motion-duration-medium2) var(--motion-easing-emphasized);
@@ -291,7 +293,7 @@
 
 /* === SUCCESS ANIMATION === */
 .success-animation {
-    animation: success-bounce 0.6s var(--motion-easing-emphasized-accelerate);
+    animation: success-spring 0.8s var(--motion-bounce);
 }
 
 @keyframes success-bounce {
