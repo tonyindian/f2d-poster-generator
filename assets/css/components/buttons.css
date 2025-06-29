@@ -1,0 +1,197 @@
+/* 🔘 FINE TO DINE - BUTTON COMPONENTS */
+/* Alle Button-Styles aus den HTML-Dateien extrahiert */
+
+/* === MATERIAL 3 EXPRESSIVE PRIMARY BUTTONS === */
+.btn-primary {
+    width: 100%;
+    background: linear-gradient(135deg, 
+        var(--ftd-primary) 0%, 
+        var(--ftd-primary-variant) 100%);
+    color: var(--neutral-100);
+    border: none;
+    padding: var(--space-20) var(--space-32);
+    border-radius: var(--shape-large);
+    font-family: var(--font-ui);
+    font-size: var(--text-title-medium);
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: var(--space-24);
+    transition: all var(--motion-duration-medium3) var(--motion-easing-emphasized);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-12);
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--elevation-3);
+    min-height: 3.5rem;
+}
+
+/* Material 3 Expressive: Shimmer effect */
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.3), 
+        transparent);
+    transition: left var(--motion-duration-extra-long2) var(--motion-easing-emphasized);
+}
+
+.btn-primary:hover::before {
+    left: 100%;
+}
+
+.btn-primary:hover:not(:disabled) {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: var(--elevation-5);
+}
+
+.btn-primary:active {
+    transform: translateY(-2px) scale(0.98);
+}
+
+.btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: var(--elevation-2);
+}
+
+/* === SECONDARY BUTTONS === */
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--ftd-primary);
+    border: 2px solid var(--ftd-primary);
+    padding: var(--space-12) var(--space-24);
+    border-radius: var(--shape-large);
+    font-family: var(--font-ui);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--motion-duration-medium2) var(--motion-easing-emphasized);
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    font-size: var(--text-body-medium);
+    box-shadow: var(--elevation-2);
+    backdrop-filter: blur(8px);
+}
+
+.btn-secondary:hover {
+    background: var(--ftd-primary);
+    color: var(--neutral-100);
+    transform: translateY(-2px);
+    box-shadow: var(--elevation-4);
+}
+
+.btn-secondary.primary {
+    background: var(--swiss-stone);
+    color: var(--ftd-primary);
+    border: 1px solid rgba(139, 34, 82, 0.2);
+}
+
+.btn-secondary.primary:hover {
+    background: var(--swiss-linen);
+    color: var(--ftd-primary);
+    border-color: var(--ftd-primary);
+}
+
+/* === AUTH BUTTON (für Login-Seite) === */
+.auth-button {
+    background: linear-gradient(135deg, 
+        var(--ftd-primary) 0%, 
+        var(--ftd-primary-variant) 100%);
+    color: var(--neutral-100);
+    border: none;
+    padding: var(--space-20) var(--space-32);
+    border-radius: var(--shape-large);
+    font-family: var(--font-ui);
+    font-size: var(--text-title-medium);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--motion-duration-medium3) var(--motion-easing-emphasized);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-12);
+    width: 100%;
+    min-height: 3.5rem;
+    box-shadow: var(--elevation-2);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Material 3 Expressive: Shimmer effect für Auth Button */
+.auth-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.3), 
+        transparent);
+    transition: left var(--motion-duration-extra-long2) var(--motion-easing-emphasized);
+}
+
+.auth-button:hover::before {
+    left: 100%;
+}
+
+.auth-button:hover:not(:disabled) {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: var(--elevation-4);
+}
+
+.auth-button:active {
+    transform: translateY(-2px) scale(0.98);
+}
+
+.auth-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: var(--elevation-1);
+}
+
+.auth-button:disabled::before {
+    opacity: 0;
+}
+
+/* === LOGOUT BUTTON === */
+.logout-button {
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: var(--space-12) var(--space-20);
+    border-radius: var(--shape-large);
+    font-family: var(--font-ui);
+    font-weight: 500;
+    font-size: var(--text-body-small);
+    cursor: pointer;
+    transition: all var(--motion-duration-medium2) var(--motion-easing-emphasized);
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+}
+
+.logout-button:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.25);
+    color: var(--neutral-100);
+}
+
+/* === BUTTON ICONS === */
+.btn-icon {
+    font-size: 1.25rem;
+}
+
+.auth-button-icon {
+    font-size: 1.25rem;
+}

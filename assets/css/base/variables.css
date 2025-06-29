@@ -1,0 +1,119 @@
+/* 🍷 FINE TO DINE - DESIGN SYSTEM VARIABLES */
+/* Extrahiert aus den Original HTML-Dateien */
+
+:root {
+    /* === SCHWEIZER UNDERSTATEMENT LUXUS FARBEN === */
+    --ftd-primary: #8B2252;         /* Original FINE TO DINE Burgundy */
+    --ftd-primary-variant: #A8325F;  /* Heller Burgundy */
+    --ftd-primary-dark: #6B1A3F;    /* Dunkler Burgundy */
+    
+    /* Schweizer Quiet Luxury - subtile Akzente statt "neureich" */
+    --swiss-stone: #F5F4F2;         /* Warmer Schweizer Kalkstein */
+    --swiss-linen: #FAFAF9;         /* Natürliches Leinen */
+    --swiss-mist: #EBEBEA;          /* Alpen-Nebel */
+    --swiss-charcoal: #454545;      /* Zurückhaltende Eleganz */
+    
+    /* === MODERNE NEUTRALE PALETTE === */
+    --neutral-100: #FFFFFF;          /* Pure white */
+    --neutral-50: #FEFEFE;           /* Off-white */
+    --neutral-25: #FCFCFC;           /* Warm white */
+    --neutral-200: #F5F5F5;          /* Light grey */
+    --neutral-300: #E8E8E8;          /* Medium light grey */
+    --neutral-500: #6B6B6B;          /* Medium grey */
+    --neutral-700: #404040;          /* Dark grey */
+    --neutral-900: #1A1A1A;          /* Near black */
+    
+    /* === MATERIAL 3 EXPRESSIVE SURFACES === */
+    --surface-primary: rgba(255, 255, 255, 0.95);
+    --surface-secondary: rgba(255, 255, 255, 0.85);
+    --surface-tertiary: rgba(255, 255, 255, 0.75);
+    --surface-variant: rgba(139, 34, 82, 0.04);
+    --surface-inverse: var(--neutral-900);
+    
+    /* === MATERIAL 3 EXPRESSIVE TYPOGRAPHY === */
+    --font-brand: 'Playfair Display', serif;    /* Brand & Headlines */
+    --font-ui: 'Inter', system-ui, sans-serif;  /* UI & Body */
+    
+    /* Typography Scale - Material 3 Expressive */
+    --text-display-large: 3.5rem;    /* Hero titles */
+    --text-display-medium: 2.75rem;  /* Section headers */
+    --text-display-small: 2.25rem;   /* Card titles */
+    --text-headline-large: 2rem;     /* Page headers */
+    --text-headline-medium: 1.75rem; /* Component headers */
+    --text-headline-small: 1.5rem;   /* Sub headers */
+    --text-title-large: 1.375rem;    /* Important text */
+    --text-title-medium: 1.125rem;   /* Standard titles */
+    --text-title-small: 0.875rem;    /* Small titles */
+    --text-body-large: 1rem;         /* Main body */
+    --text-body-medium: 0.875rem;    /* Secondary body */
+    --text-body-small: 0.75rem;      /* Caption text */
+    
+    /* === MATERIAL 3 EXPRESSIVE SPACING === */
+    --space-4: 0.25rem;   /* 4px */
+    --space-8: 0.5rem;    /* 8px */
+    --space-12: 0.75rem;  /* 12px */
+    --space-16: 1rem;     /* 16px */
+    --space-20: 1.25rem;  /* 20px */
+    --space-24: 1.5rem;   /* 24px */
+    --space-32: 2rem;     /* 32px */
+    --space-40: 2.5rem;   /* 40px */
+    --space-48: 3rem;     /* 48px */
+    --space-56: 3.5rem;   /* 56px */
+    --space-64: 4rem;     /* 64px */
+    --space-80: 5rem;     /* 80px */
+    
+    /* === MATERIAL 3 EXPRESSIVE SHAPE SYSTEM === */
+    --shape-extra-small: 0.25rem;    /* 4px */
+    --shape-small: 0.5rem;           /* 8px */
+    --shape-medium: 0.75rem;         /* 12px */
+    --shape-large: 1rem;             /* 16px */
+    --shape-extra-large: 1.75rem;    /* 28px */
+    --shape-full: 50rem;             /* Full rounded */
+    
+    /* === MATERIAL 3 EXPRESSIVE ELEVATION === */
+    --elevation-1: 0 1px 2px 0 rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
+    --elevation-2: 0 1px 2px 0 rgba(0, 0, 0, 0.3), 0 2px 6px 2px rgba(0, 0, 0, 0.15);
+    --elevation-3: 0 4px 8px 3px rgba(0, 0, 0, 0.15), 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+    --elevation-4: 0 6px 10px 4px rgba(0, 0, 0, 0.15), 0 2px 3px 0 rgba(0, 0, 0, 0.3);
+    --elevation-5: 0 8px 12px 6px rgba(0, 0, 0, 0.15), 0 4px 4px 0 rgba(0, 0, 0, 0.3);
+    
+    /* === MATERIAL 3 EXPRESSIVE MOTION === */
+    --motion-easing-linear: cubic-bezier(0, 0, 1, 1);
+    --motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+    --motion-easing-standard-accelerate: cubic-bezier(0.3, 0, 1, 1);
+    --motion-easing-standard-decelerate: cubic-bezier(0, 0, 0, 1);
+    --motion-easing-emphasized: cubic-bezier(0.2, 0, 0, 1);
+    --motion-easing-emphasized-accelerate: cubic-bezier(0.05, 0.7, 0.1, 1);
+    --motion-easing-emphasized-decelerate: cubic-bezier(0.3, 0, 0.8, 0.15);
+    --motion-easing-legacy: cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Duration tokens */
+    --motion-duration-short1: 50ms;
+    --motion-duration-short2: 100ms;
+    --motion-duration-short3: 150ms;
+    --motion-duration-short4: 200ms;
+    --motion-duration-medium1: 250ms;
+    --motion-duration-medium2: 300ms;
+    --motion-duration-medium3: 350ms;
+    --motion-duration-medium4: 400ms;
+    --motion-duration-long1: 450ms;
+    --motion-duration-long2: 500ms;
+    --motion-duration-long3: 550ms;
+    --motion-duration-long4: 600ms;
+    --motion-duration-extra-long1: 700ms;
+    --motion-duration-extra-long2: 800ms;
+    --motion-duration-extra-long3: 900ms;
+    --motion-duration-extra-long4: 1000ms;
+}
+
+/* === DARK MODE SUPPORT === */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --surface-primary: rgba(26, 26, 26, 0.95);
+        --surface-secondary: rgba(38, 38, 38, 0.85);
+        --surface-tertiary: rgba(64, 64, 64, 0.75);
+        --neutral-900: #f5f5f5;
+        --neutral-700: #d4d4d4;
+        --neutral-500: #a3a3a3;
+    }
+}

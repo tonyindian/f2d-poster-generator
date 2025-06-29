@@ -1,0 +1,97 @@
+/* 🎯 MODERN CSS RESET & BASE STYLES */
+/* Extrahiert aus den Original FINE TO DINE HTML-Dateien */
+
+/* === RESET & BASE === */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+    height: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    font-family: var(--font-ui);
+    font-size: var(--text-body-large);
+    line-height: 1.5;
+    color: var(--neutral-900);
+    background: linear-gradient(135deg, 
+        var(--ftd-primary-dark) 0%, 
+        var(--ftd-primary) 50%, 
+        var(--ftd-primary-variant) 100%);
+    min-height: 100vh;
+    min-height: 100dvh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* === SCHWEIZER ALPEN PATTERN === */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 20% 80%, rgba(245, 244, 242, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(245, 244, 242, 0.03) 0%, transparent 50%),
+        linear-gradient(135deg, transparent 0%, rgba(245, 244, 242, 0.02) 50%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Media Elements */
+img, picture, video, canvas, svg {
+    display: block;
+    max-width: 100%;
+}
+
+/* Form Elements */
+input, button, textarea, select {
+    font: inherit;
+}
+
+/* Text Elements */
+p, h1, h2, h3, h4, h5, h6 {
+    overflow-wrap: break-word;
+}
+
+/* === ACCESSIBILITY === */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+@media (prefers-contrast: high) {
+    .card {
+        border: 2px solid var(--ftd-primary);
+    }
+    
+    .btn-primary {
+        border: 2px solid var(--neutral-100);
+    }
+}
+
+/* === FOCUS INDICATORS === */
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+.logout-button:focus-visible {
+    outline: 3px solid var(--swiss-charcoal);
+    outline-offset: 2px;
+}
+
+.form-textarea:focus-visible {
+    outline: 3px solid var(--swiss-charcoal);
+    outline-offset: 2px;
+}

@@ -1,0 +1,301 @@
+/* 🃏 FINE TO DINE - CARD COMPONENTS */
+/* Alle Card-Styles aus den HTML-Dateien extrahiert */
+
+/* === GLASMORPHISM CARDS === */
+.card {
+    background: var(--surface-primary);
+    backdrop-filter: blur(24px);
+    border-radius: var(--shape-extra-large);
+    padding: var(--space-40);
+    box-shadow: var(--elevation-3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all var(--motion-duration-medium4) var(--motion-easing-emphasized);
+    position: relative;
+    overflow: hidden;
+}
+
+.card:hover {
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: var(--elevation-5);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-4px);
+}
+
+/* Material 3 Expressive: Subtle background pattern */
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, 
+        var(--ftd-primary) 0%, 
+        var(--swiss-charcoal) 50%, 
+        var(--ftd-primary-variant) 100%);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--motion-duration-medium4) var(--motion-easing-emphasized);
+}
+
+.card:hover::before {
+    transform: scaleX(1);
+}
+
+/* === LOGIN CARD (spezielle Variante) === */
+.login-card {
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(24px);
+    border-radius: var(--shape-extra-large);
+    padding: var(--space-64);
+    max-width: 28rem;
+    width: 100%;
+    box-shadow: var(--elevation-5);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: all var(--motion-duration-medium4) var(--motion-easing-emphasized);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Schweizer Eleganz: Subtiler Top-Border */
+.login-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, 
+        var(--ftd-primary) 0%, 
+        var(--swiss-stone) 50%, 
+        var(--ftd-primary-variant) 100%);
+}
+
+.login-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--elevation-5), 
+                0 0 40px rgba(139, 34, 82, 0.2);
+}
+
+/* === RESULT CARD === */
+.result-card {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 500ms var(--motion-easing-emphasized-accelerate);
+}
+
+.result-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* === CARD HEADERS === */
+.header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-20);
+    margin-bottom: var(--space-40);
+}
+
+.result-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+    margin-bottom: var(--space-24);
+}
+
+/* === BRAND HEADER === */
+.brand-header {
+    text-align: center;
+    margin-bottom: var(--space-48);
+}
+
+/* === CARD ICONS === */
+.header-icon {
+    width: 64px;
+    height: 64px;
+    background: var(--swiss-stone);
+    border: 2px solid rgba(139, 34, 82, 0.15);
+    border-radius: var(--shape-large);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--elevation-1);
+    transition: all var(--motion-duration-medium2) var(--motion-easing-emphasized);
+}
+
+.header-icon:hover {
+    transform: scale(1.05) rotate(2deg);
+    box-shadow: var(--elevation-3);
+}
+
+.header-icon .material-symbols-outlined {
+    color: var(--ftd-primary);
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.brand-icon {
+    width: 80px;
+    height: 80px;
+    background: var(--swiss-stone);
+    border: 3px solid rgba(139, 34, 82, 0.15);
+    border-radius: var(--shape-extra-large);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ftd-primary);
+    font-size: 2.5rem;
+    box-shadow: var(--elevation-2);
+    margin: 0 auto var(--space-24);
+    position: relative;
+    overflow: hidden;
+    transition: all var(--motion-duration-medium3) var(--motion-easing-emphasized);
+}
+
+.brand-icon::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(139, 34, 82, 0.1), transparent);
+    transform: rotate(45deg);
+    transition: transform var(--motion-duration-long4) var(--motion-easing-emphasized);
+}
+
+.brand-icon:hover {
+    transform: scale(1.05) rotate(2deg);
+    box-shadow: var(--elevation-3);
+}
+
+.brand-icon:hover::before {
+    transform: rotate(45deg) translate(100%, 100%);
+}
+
+.result-icon {
+    background: linear-gradient(135deg, 
+        var(--swiss-stone) 0%, 
+        var(--swiss-linen) 100%);
+    border-radius: var(--shape-medium);
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ftd-primary);
+    font-size: 1.25rem;
+}
+
+/* === CARD TITLES === */
+.header-text h1 {
+    font-family: var(--font-brand);
+    font-size: var(--text-headline-large);
+    font-weight: 800;
+    color: var(--ftd-primary);
+    letter-spacing: -0.02em;
+    margin-bottom: var(--space-4);
+}
+
+.brand-title {
+    font-family: var(--font-brand);
+    font-weight: 800;
+    font-size: clamp(var(--text-headline-medium), 4vw, var(--text-display-small));
+    color: var(--ftd-primary);
+    margin-bottom: var(--space-8);
+    letter-spacing: -0.02em;
+}
+
+.result-title {
+    font-family: var(--font-brand);
+    font-size: var(--text-headline-medium);
+    font-weight: 700;
+    color: var(--ftd-primary);
+    margin-bottom: var(--space-24);
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+}
+
+.result-title .material-symbols-outlined {
+    color: var(--swiss-charcoal);
+    font-size: 1.75rem;
+    opacity: 0.7;
+}
+
+/* === CARD SUBTITLES & DESCRIPTIONS === */
+.header-text p {
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--neutral-900);
+    font-size: var(--text-body-medium);
+    font-weight: 600;
+    padding: var(--space-8) var(--space-16);
+    border-radius: var(--shape-large);
+    border: 1px solid rgba(139, 34, 82, 0.1);
+    box-shadow: var(--elevation-1);
+    display: inline-block;
+    backdrop-filter: blur(8px);
+}
+
+.brand-subtitle {
+    color: #1A1A1A;
+    font-size: var(--text-title-large);
+    font-weight: 600;
+    margin-bottom: var(--space-12);
+    background: #FFFFFF;
+    padding: var(--space-8) var(--space-16);
+    border-radius: var(--shape-medium);
+    display: inline-block;
+    border: 1px solid rgba(139, 34, 82, 0.2);
+    box-shadow: var(--elevation-1);
+}
+
+.brand-description {
+    color: #1A1A1A;
+    font-size: var(--text-body-large);
+    line-height: 1.6;
+    margin-bottom: var(--space-48);
+    max-width: 24rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* === CARD CONTENT === */
+.result-content {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(8px);
+    border-radius: var(--shape-large);
+    padding: var(--space-32);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    min-height: 400px;
+    font-family: var(--font-ui);
+    line-height: 1.7;
+    color: var(--neutral-900);
+    white-space: pre-wrap;
+    margin-bottom: var(--space-24);
+    transition: all var(--motion-duration-medium2) var(--motion-easing-emphasized);
+}
+
+.result-content:hover {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: var(--elevation-2);
+}
+
+/* === CARD ACTIONS === */
+.result-actions {
+    display: flex;
+    gap: var(--space-16);
+    flex-wrap: wrap;
+}
+
+/* === SUCCESS ANIMATION === */
+.success-animation {
+    animation: success-bounce 0.6s var(--motion-easing-emphasized-accelerate);
+}
+
+@keyframes success-bounce {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+}

@@ -1,0 +1,101 @@
+/* 📱 FINE TO DINE - RESPONSIVE DESIGN */
+/* Mobile-First Media Queries aus den HTML-Dateien extrahiert */
+
+/* === RESPONSIVE DESIGN === */
+@media (max-width: 768px) {
+    .user-header {
+        position: static;
+        margin-bottom: var(--space-24);
+        justify-content: center;
+        top: auto;
+        right: auto;
+        background: rgba(45, 25, 35, 0.9);
+    }
+    
+    .main-grid {
+        grid-template-columns: 1fr;
+        padding: var(--space-48) var(--space-20);
+        gap: var(--space-32);
+        margin-top: var(--space-32);
+    }
+    
+    .app-container {
+        padding: var(--space-16);
+    }
+    
+    .card {
+        padding: var(--space-32);
+    }
+    
+    .header {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--space-16);
+    }
+    
+    .header-text h1 {
+        font-size: var(--text-headline-small);
+    }
+    
+    .result-actions {
+        justify-content: center;
+    }
+    
+    /* Login Responsive */
+    .login-container {
+        padding: var(--space-20);
+    }
+    
+    .login-card {
+        padding: var(--space-48);
+        max-width: 24rem;
+    }
+    
+    .brand-title {
+        font-size: var(--text-headline-medium);
+    }
+    
+    .brand-subtitle {
+        font-size: var(--text-title-medium);
+    }
+    
+    .brand-description {
+        font-size: var(--text-body-medium);
+    }
+}
+
+@media (max-width: 480px) {
+    .app-container {
+        padding: var(--space-12);
+    }
+    
+    .card {
+        padding: var(--space-24);
+    }
+    
+    .user-header {
+        flex-direction: column;
+        gap: var(--space-12);
+        text-align: center;
+    }
+    
+    /* Login Mobile */
+    .login-container {
+        padding: var(--space-16);
+    }
+    
+    .login-card {
+        padding: var(--space-32);
+        border-radius: var(--shape-large);
+    }
+    
+    .brand-icon {
+        width: 64px;
+        height: 64px;
+        font-size: 2rem;
+    }
+    
+    .brand-title {
+        font-size: var(--text-headline-small);
+    }
+}

@@ -1,0 +1,172 @@
+/* ⏳ FINE TO DINE - LOADING & NAVIGATION COMPONENTS */
+/* Loading-States und Navigation aus den HTML-Dateien extrahiert */
+
+/* === LOADING SCREEN === */
+.auth-loading {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, 
+        var(--ftd-primary-dark) 0%, 
+        var(--ftd-primary) 70%, 
+        var(--ftd-primary-variant) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: var(--space-24);
+    z-index: 1000;
+}
+
+.auth-loading.hidden {
+    display: none;
+}
+
+.loading-icon {
+    background: var(--swiss-stone);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--shape-extra-large);
+    width: 5rem;
+    height: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ftd-primary);
+    font-size: 2.5rem;
+    box-shadow: var(--elevation-3);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.loading-text {
+    font-family: var(--font-brand);
+    font-size: var(--text-headline-large);
+    font-weight: 800;
+    color: var(--neutral-100);
+    margin-bottom: var(--space-8);
+    letter-spacing: -0.02em;
+}
+
+.loading-spinner {
+    width: 2rem;
+    height: 2rem;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top: 3px solid var(--neutral-100);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.auth-loading p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: var(--text-body-medium);
+}
+
+/* === LOADING STATES === */
+.loading-state {
+    display: none;
+    text-align: center;
+    color: var(--neutral-500);
+    font-style: italic;
+    padding: var(--space-32);
+}
+
+.loading-state.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-16);
+}
+
+.loading-state::after {
+    content: '';
+    width: 24px;
+    height: 24px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top: 3px solid var(--ftd-primary);
+    border-radius: var(--shape-full);
+    animation: spin var(--motion-duration-extra-long4) linear infinite;
+}
+
+/* === LOGIN LOADING STATE === */
+.loading-state {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-12);
+    color: #1A1A1A;
+    font-size: var(--text-body-medium);
+    margin-top: var(--space-24);
+    padding: var(--space-16);
+}
+
+.loading-state.active {
+    display: flex;
+}
+
+.loading-spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid var(--neutral-300);
+    border-top: 3px solid var(--ftd-primary);
+    border-radius: var(--shape-full);
+    animation: spin var(--motion-duration-extra-long4) linear infinite;
+}
+
+/* === USER HEADER / NAVIGATION === */
+.user-header {
+    position: fixed;
+    top: var(--space-24);
+    right: var(--space-32);
+    display: flex;
+    align-items: center;
+    gap: var(--space-16);
+    background: rgba(45, 25, 35, 0.4);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--shape-extra-large);
+    padding: var(--space-16) var(--space-24);
+    z-index: 100;
+    transition: all var(--motion-duration-medium3) var(--motion-easing-emphasized);
+}
+
+.user-header:hover {
+    background: rgba(45, 25, 35, 0.6);
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+}
+
+.user-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--shape-full);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    object-fit: cover;
+    transition: all var(--motion-duration-medium2) var(--motion-easing-emphasized);
+}
+
+.user-avatar:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.user-info {
+    color: var(--neutral-100);
+}
+
+.user-name {
+    font-weight: 600;
+    font-size: var(--text-title-medium);
+    margin-bottom: var(--space-4);
+}
+
+.user-email {
+    font-size: var(--text-body-small);
+    opacity: 0.8;
+}

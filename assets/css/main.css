@@ -1,0 +1,42 @@
+/* 🍷 FINE TO DINE - MAIN CSS ENTRY POINT */
+/* Diese Datei importiert alle anderen CSS-Module */
+/* 2025 Professional CSS Architecture */
+
+/* === BASE STYLES (Foundation) === */
+@import url('./base/variables.css');
+@import url('./base/reset.css');
+
+/* === COMPONENTS (Reusable UI Elements) === */
+@import url('./components/buttons.css');
+@import url('./components/cards.css');
+@import url('./components/forms.css');
+@import url('./components/loading.css');
+
+/* === LAYOUTS (Page Structure) === */
+@import url('./layouts/app.css');
+@import url('./layouts/responsive.css');
+
+/* 
+=== ARCHITECTURE OVERVIEW ===
+
+📁 base/
+  ├── variables.css      # Design system tokens (colors, spacing, typography)
+  └── reset.css          # Modern CSS reset & body styles
+
+📁 components/
+  ├── buttons.css        # All button variants (primary, secondary, auth, logout)
+  ├── cards.css          # Card components (login, app, result)
+  ├── forms.css          # Form elements & error handling
+  └── loading.css        # Loading states & navigation
+
+📁 layouts/
+  ├── app.css            # Main application layout
+  └── responsive.css     # Mobile-first media queries
+
+=== BENEFITS ===
+✅ Modular & maintainable
+✅ Single source of truth
+✅ Better caching
+✅ Team collaboration friendly
+✅ 2025 best practices
+*/
