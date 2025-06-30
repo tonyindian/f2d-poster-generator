@@ -144,7 +144,7 @@ exports.handler = async (event, context) => {
 
     try {
         // 🚀 1. RATE LIMITING CHECK (FIRST!)
-        const rateLimitResult = rateLimitMiddleware(event);
+        const rateLimitResult = await rateLimitMiddleware(event);
         if (!rateLimitResult.allowed) {
             return rateLimitResult.response;
         }
