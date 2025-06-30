@@ -132,14 +132,16 @@ async function callClaudeWithRetry(prompt, maxRetries = 3) {
                 headers: {
                     'x-api-key': process.env.CLAUDE_API_KEY,
                     'content-type': 'application/json',
-                    'anthropic-version': '2023-06-01'
+                    'anthropic-version': '2023-06-01',
+                    'Connection': 'keep-alive'  // ← NEU
                 },
                 body: JSON.stringify({
                     model: 'claude-sonnet-4-20250514',
-                    max_tokens: 600,  // ← Schnellere Generation
+                    max_tokens: 400,  // ← REDUZIERT von 600 auf 400
                     messages: [{ role: 'user', content: prompt }]
                 }),
-                timeout: 4000      // ← Bleibt unter 10s Netlify Limit
+                timeout: 4000,  // ← REDUZIERT von 6000 auf 4000
+                keepalive: true // ← NEU
             });
 
             if (response.ok) {
