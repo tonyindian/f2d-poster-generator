@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FINE TO DINE - Perfekte Posts in 60 Sekunden</title>
-    
+
     <!-- Favicon & App Icons -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0iIzhCMjI1MiIvPgo8cGF0aCBkPSJNOSAxMkgxNS41SDIzTDIxIDIwSDExTDkgMTJaIiBmaWxsPSIjRjVGNEYyIi8+CjxjaXJjbGUgY3g9IjE2IiBjeT0iOSIgcj0iMiIgZmlsbD0iI0Y1RjRGMiIvPgo8L3N2Zz4K">
-    <link rel="apple-touch-icon" sizes="180x180" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE4MCAxODAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxODAiIGhlaWdodD0iMTgwIiByeD0iNDAiIGZpbGw9IiM4QjIyNTIiLz4KPHBhdGggZD0iTTUwIDY3SDg3SDEzMEwxMTggMTEzSDYyTDUwIDY3WiIgZmlsbD0iI0Y1RjRGMiIvPgo8Y2lyY2xlIGN4PSI5MCIgY3k9IjUwIiByPSIxMiIgZmlsbD0iI0Y1RjRGMiIvPgo8L3N2Zz4K">
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0iIzhCMjI1MiIvPgo8cGF0aCBkPSJNOSAxMkgxNS41SDIzTDIxIDIwSDExTDkgMTJaIiBmaWxsPSIjRjVGNEYyIi8+CjxjaXJjbGUgY3g9IjE2IiBjeT0iOSIgcj0iMiIgZmlsbD0iI0Y1RjRGMiIvPgo8L3N2Zz4K">
+    <link rel="apple-touch-icon" sizes="180x180"
+        href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE4MCAxODAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxODAiIGhlaWdodD0iMTgwIiByeD0iNDAiIGZpbGw9IiM4QjIyNTIiLz4KPHBhdGggZD0iTTUwIDY3SDg3SDEzMEwxMTggMTEzSDYyTDUwIDY3WiIgZmlsbD0iI0Y1RjRGMiIvPgo8Y2lyY2xlIGN4PSI5MCIgY3k9IjUwIiByPSIxMiIgZmlsbD0iI0Y1RjRGMiIvPgo8L3N2Zz4K">
     <meta name="theme-color" content="#8B2252">
-<!-- Security Headers -->
-<meta http-equiv="Content-Security-Policy" 
-      content="default-src 'self'; 
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; 
                script-src 'self' 'unsafe-inline' https://cdn.auth0.com;
                style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
                font-src https://fonts.gstatic.com;
@@ -22,20 +24,27 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="FINE TO DINE">
-    
-   <!-- Preconnect bleibt bestehen -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<!-- Optimized Font Loading - Non-blocking -->
-<link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" media="all">
-<link rel="preload" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
-</noscript>
-<link rel="stylesheet" href="/assets/css/main.css">
+    <!-- Preconnect bleibt bestehen -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Optimized Font Loading - Non-blocking -->
+    <link rel="preload"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap"
+        as="style" onload="this.onload=null;this.rel='stylesheet'" media="all">
+    <link rel="preload"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap">
+        <link rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+    </noscript>
+    <link rel="stylesheet" href="/assets/css/main.css">
 </head>
+
 <body>
     <!-- Authentication Loading Screen -->
     <div id="authLoading" class="auth-loading">
@@ -78,10 +87,7 @@
                 <form id="postForm">
                     <div class="form-group">
                         <label for="magazinText" class="form-label">Ihr Restaurant-Artikel</label>
-                        <textarea 
-                            id="magazinText" 
-                            name="magazinText" 
-                            class="form-textarea" 
+                        <textarea id="magazinText" name="magazinText" class="form-textarea"
                             placeholder="Beschreiben Sie Ihr Restaurant kurz (3-5 Sätze reichen)&#10;&#10;Z.B.: Das Gasthaus zum Löwen bietet seit 1788 authentische Schweizer Küche. Küchenchef Kevin verwöhnt mit regionalen Spezialitäten. Perfekt für besondere Anlässe."
                             required></textarea>
                     </div>
@@ -145,20 +151,20 @@
                 cacheLocation: 'localstorage',
                 useRefreshTokens: true
             };
-            
+
             constructor() {
                 this.#initializeAuth();
                 this.#bindEvents();
             }
-            
+
             async #initializeAuth() {
                 try {
                     console.log('🚀 Starting app initialization...');
                     console.log('Current URL:', window.location.href);
-                    
+
                     this.#auth0Client = await auth0.createAuth0Client(this.#config);
                     console.log('✅ Auth0 client created');
-                    
+
                     // Handle OAuth callback mit verbesserter Error-Behandlung
                     if (window.location.search.includes('code=')) {
                         console.log('🔄 Handling OAuth callback...');
@@ -169,7 +175,7 @@
                             window.history.replaceState({}, document.title, window.location.pathname);
                         } catch (callbackError) {
                             console.error('❌ Callback handling failed:', callbackError);
-                            
+
                             // Bei State-Error: Force neu-authentifizierung
                             if (callbackError.message.includes('Invalid state') || callbackError.message.includes('state')) {
                                 console.log('🔧 State error detected - forcing re-authentication');
@@ -184,7 +190,7 @@
                             throw callbackError;
                         }
                     }
-                    
+
                     // Check authentication status
                     console.log('🔐 Checking authentication status...');
                     if (await this.#auth0Client.isAuthenticated()) {
@@ -201,33 +207,52 @@
                     this.#redirectToLogin();
                 }
             }
-            
+
+            // 🔧 ERSETZE die #clearAuth0Cache() Funktion mit dieser verbesserten Version:
+
             async #clearAuth0Cache() {
                 try {
-                    // Auth0 cache clearen
-                    const auth0Keys = Object.keys(localStorage).filter(key => 
-                        key.startsWith('@@auth0spajs@@') || key.includes('auth0')
+                    console.log('🧹 Starting Auth0 cache cleanup...');
+
+                    // Alle Auth0-bezogenen Storage-Einträge löschen
+                    const localStorageKeys = Object.keys(localStorage).filter(key =>
+                        key.startsWith('@@auth0spajs@@') ||
+                        key.includes('auth0') ||
+                        key.includes('a8wqmdKF8OgorCzddR6mFmdSdQCf0vmq') ||
+                        key.includes('dev-j7lkspndihsozye4')
                     );
-                    auth0Keys.forEach(key => localStorage.removeItem(key));
-                    
-                    // Session storage auch clearen
-                    const sessionKeys = Object.keys(sessionStorage).filter(key => 
-                        key.startsWith('@@auth0spajs@@') || key.includes('auth0')
+                    localStorageKeys.forEach(key => {
+                        console.log('🗑️ Removing localStorage key:', key);
+                        localStorage.removeItem(key);
+                    });
+
+                    const sessionStorageKeys = Object.keys(sessionStorage).filter(key =>
+                        key.startsWith('@@auth0spajs@@') ||
+                        key.includes('auth0') ||
+                        key.includes('a8wqmdKF8OgorCzddR6mFmdSdQCf0vmq') ||
+                        key.includes('dev-j7lkspndihsozye4')
                     );
-                    sessionKeys.forEach(key => sessionStorage.removeItem(key));
-                    
-                    console.log('🧹 Auth0 cache cleared');
+                    sessionStorageKeys.forEach(key => {
+                        console.log('🗑️ Removing sessionStorage key:', key);
+                        sessionStorage.removeItem(key);
+                    });
+
+                    // User-State zurücksetzen
+                    this.#user = null;
+
+                    console.log('✅ Auth0 cache cleanup completed');
+
                 } catch (error) {
-                    console.error('Error clearing cache:', error);
+                    console.error('⚠️ Cache clearing failed:', error);
                 }
             }
-            
+
             #showApp() {
                 document.getElementById('authLoading').classList.add('hidden');
                 document.getElementById('mainApp').classList.add('visible');
                 this.#loadUserProfile();
             }
-            
+
             #redirectToLogin() {
                 if ('navigation' in window) {
                     window.navigation.navigate('/login.html');
@@ -235,58 +260,81 @@
                     window.location.href = '/login.html';
                 }
             }
-            
+
             #loadUserProfile() {
                 const userAvatar = document.getElementById('userAvatar');
                 const userName = document.getElementById('userName');
                 const userEmail = document.getElementById('userEmail');
-                
+
                 if (this.#user) {
                     userAvatar.src = this.#user.picture || `https://ui-avatars.com/api/?name=${encodeURIComponent(this.#user.name || this.#user.email)}&background=8B2252&color=FFFFFF`;
                     userName.textContent = this.#user.name || this.#user.email;
                     userEmail.textContent = this.#user.email;
                 }
             }
-            
+
             #bindEvents() {
-                // Logout functionality
-                document.getElementById('logoutButton')?.addEventListener('click', async () => {
-                    await this.#clearAuth0Cache();
-                    this.#auth0Client?.logout({
-                        logoutParams: {
-                            returnTo: `${window.location.origin}/login.html`
-                        }
-                    });
+                // Logout functionality - FIXED
+                document.getElementById('logoutButton')?.addEventListener('click', async (event) => {
+                    event.preventDefault();
+                    console.log('🔓 Logout button clicked');
+
+                    try {
+                        // UI Feedback
+                        const button = event.target.closest('button');
+                        const originalContent = button.innerHTML;
+                        button.innerHTML = '<span class="material-symbols-outlined">logout</span><span>Wird abgemeldet...</span>';
+                        button.disabled = true;
+
+                        // 1. Lokalen Cache clearen
+                        await this.#clearAuth0Cache();
+
+                        // 2. Direkt zu Auth0 Logout-URL redirecten (WICHTIG!)
+                        const logoutUrl = `https://${this.#config.domain}/v2/logout?` +
+                            `client_id=${this.#config.clientId}&` +
+                            `returnTo=${encodeURIComponent(`${window.location.origin}/login.html`)}&` +
+                            `federated=`;
+
+                        console.log('🔄 Redirecting to Auth0 logout:', logoutUrl);
+
+                        // KRITISCH: Direkter Redirect, NICHT Auth0 SDK verwenden
+                        window.location.href = logoutUrl;
+
+                    } catch (error) {
+                        console.error('💥 Logout failed:', error);
+                        // Fallback: Hard-Reload zur Login-Seite
+                        window.location.href = '/login.html';
+                    }
                 });
-                
+
                 // Form submission
                 document.getElementById('postForm')?.addEventListener('submit', (e) => this.#handleFormSubmit(e));
             }
-            
+
             async #handleFormSubmit(event) {
                 event.preventDefault();
-                
+
                 const magazinText = document.getElementById('magazinText')?.value.trim();
                 if (!magazinText) {
                     this.#showError('Bitte geben Sie einen Restaurant-Artikel ein.');
                     return;
                 }
-                
+
                 const submitButton = document.querySelector('button[type="submit"]');
                 const loadingState = document.getElementById('loadingState');
                 const resultCard = document.getElementById('resultCard');
                 const errorMessage = document.getElementById('errorMessage');
-                
+
                 // UI Updates
                 submitButton.disabled = true;
                 loadingState?.classList.add('active');
                 resultCard?.classList.remove('visible');
                 errorMessage?.classList.remove('active');
-                
+
                 try {
                     // Get Auth0 token for secure API call
                     const token = await this.#auth0Client.getTokenSilently();
-                    
+
                     const response = await fetch('/.netlify/functions/generate', {
                         method: 'POST',
                         headers: {
@@ -295,14 +343,14 @@
                         },
                         body: JSON.stringify({ magazinText })
                     });
-                    
+
                     const data = await response.json();
-                    
+
                     if (data.success) {
                         document.getElementById('resultContent').textContent = data.content;
                         resultCard?.classList.add('visible');
                         resultCard?.classList.add('success-animation');
-                        
+
                         // Remove animation class after completion
                         setTimeout(() => {
                             resultCard?.classList.remove('success-animation');
@@ -318,13 +366,13 @@
                     loadingState?.classList.remove('active');
                 }
             }
-            
+
             #showError(message) {
                 const errorElement = document.getElementById('errorMessage');
                 if (errorElement) {
                     errorElement.textContent = message;
                     errorElement.classList.add('active');
-                    
+
                     // Auto-hide after 5 seconds
                     setTimeout(() => {
                         errorElement.classList.remove('active');
@@ -332,12 +380,12 @@
                 }
             }
         }
-        
+
         // Utility Functions (Global for onclick handlers)
-        window.copyToClipboard = async function() {
+        window.copyToClipboard = async function () {
             const content = document.getElementById('resultContent')?.textContent;
             if (!content || content.includes('Verwandeln Sie Ihre Restaurant-Geschichte')) return;
-            
+
             try {
                 await navigator.clipboard.writeText(content);
                 const btn = event.target.closest('button');
@@ -352,11 +400,11 @@
                 console.error('Copy failed:', error);
             }
         };
-        
-        window.sharePost = function() {
+
+        window.sharePost = function () {
             const content = document.getElementById('resultContent')?.textContent;
             if (!content || content.includes('Verwandeln Sie Ihre Restaurant-Geschichte')) return;
-            
+
             if (navigator.share) {
                 navigator.share({
                     title: 'FINE TO DINE Social Media Post',
@@ -366,25 +414,25 @@
                 window.copyToClipboard();
             }
         };
-        
-        window.newPost = function() {
+
+        window.newPost = function () {
             const magazinText = document.getElementById('magazinText');
             const resultCard = document.getElementById('resultCard');
             const errorMessage = document.getElementById('errorMessage');
             const resultContent = document.getElementById('resultContent');
-            
+
             if (magazinText) magazinText.value = '';
             resultCard?.classList.remove('visible');
             errorMessage?.classList.remove('active');
-            
+
             // Reset result content to placeholder
             if (resultContent) {
                 resultContent.innerHTML = '✨ Verwandeln Sie Ihre Restaurant-Geschichte in einen ansprechenden Social Media Post.<br>Einfach Artikel eingeben und "Perfekten Post erstellen" klicken.';
             }
-            
+
             magazinText?.focus();
         };
-        
+
         // Initialize App
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => new ProtectedApp());
@@ -393,4 +441,5 @@
         }
     </script>
 </body>
+
 </html>
