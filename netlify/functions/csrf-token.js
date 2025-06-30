@@ -48,7 +48,7 @@ exports.handler = async (event, context) => {
             statusCode: 200,
             headers,
             body: JSON.stringify({ 
-                csrfToken: signedToken,
+                token: signedToken,
                 expiresIn: 3600000 // 1 hour in milliseconds
             })
         };
