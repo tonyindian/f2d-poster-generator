@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FINE TO DINE - Perfekte Posts in 60 Sekunden</title>
+
+    <!-- Favicon & App Icons -->
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0iIzhCMjI1MiIvPgo8cGF0aCBkPSJNOSAxMkgxNS41SDIzTDIxIDIwSDExTDkgMTJaIiBmaWxsPSIjRjVGNEYyIi8+CjxjaXJjbGUgY3g9IjE2IiBjeT0iOSIgcj0iMiIgZmlsbD0iI0Y1RjRGMiIvPgo8L3N2Zz4K">
+    <link rel="apple-touch-icon" sizes="180x180"
+        href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE4MCAxODAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxODAiIGhlaWdodD0iMTgwIiByeD0iNDAiIGZpbGw9IiM4QjIyNTIiLz4KPHBhdGggZD0iTTUwIDY3SDg3SDEzMEwxMTggMTEzSDYyTDUwIDY3WiIgZmlsbD0iI0Y1RjRGMiIvPgo8Y2lyY2xlIGN4PSI5MCIgY3k9IjUwIiByPSIxMiIgZmlsbD0iI0Y1RjRGMiIvPgo8L3N2Zz4K">
+    <meta name="theme-color" content="#8B2252">
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; 
+               script-src 'self' 'unsafe-inline' https://cdn.auth0.com;
+               style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+               font-src https://fonts.gstatic.com;
+               connect-src 'self' https://f2d-poster-generator.netlify.app/.netlify/functions/ https://api.anthropic.com https://*.auth0.com;
+               img-src 'self' data: https:;
+               form-action 'self';">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="FINE TO DINE">
+
+    <!-- Preconnect bleibt bestehen -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Optimized Font Loading - Non-blocking -->
+    <link rel="preload"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap"
+        as="style" onload="this.onload=null;this.rel='stylesheet'" media="all">
+    <link rel="preload"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap">
+        <link rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+    </noscript>
+    <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+
+<body>
+    <!-- Authentication Loading Screen -->
+    <div id="authLoading" class="auth-loading">
+        <div class="loading-icon">
+            <span class="material-symbols-outlined">restaurant</span>
+        </div>
+        <div class="loading-text">FINE TO DINE</div>
+        <div class="loading-spinner"></div>
+        <p>Authentifizierung wird überprüft...</p>
+    </div>
+
+    <!-- Main Application -->
+    <div id="mainApp" class="app-container">
+        <!-- User Header -->
+        <header id="userHeader" class="user-header">
+            <img id="userAvatar" class="user-avatar" src="" alt="User Avatar">
+            <div class="user-info">
+                <div id="userName" class="user-name"></div>
+                <div id="userEmail" class="user-email"></div>
+            </div>
+            <button id="logoutButton" class="logout-button">
+                <span class="material-symbols-outlined" style="font-size: 1rem;">logout</span>
+                <span>Abmelden</span>
+            </button>
+        </header>
+
+        <div class="main-grid">
+            <!-- Input Section -->
+            <div class="card">
+                <div class="header">
+                    <div class="header-icon">
+                        <span class="material-symbols-outlined">restaurant</span>
+                    </div>
+                    <div class="header-text">
+                        <h1>FINE TO DINE</h1>
+                        <p>Perfekte Posts in 60 Sekunden</p>
+                    </div>
+                </div>
+
+                <form id="postForm">
+                    <div class="form-group">
+                        <label for="magazinText" class="form-label">Ihr Restaurant-Artikel</label>
+                        <textarea id="magazinText" name="magazinText" class="form-textarea"
+                            placeholder="Beschreiben Sie Ihr Restaurant kurz (3-5 Sätze reichen)&#10;&#10;Z.B.: Das Gasthaus zum Löwen bietet seit 1788 authentische Schweizer Küche. Küchenchef Kevin verwöhnt mit regionalen Spezialitäten. Perfekt für besondere Anlässe."
+                            required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-primary">
+                        <span class="material-symbols-outlined btn-icon">auto_awesome</span>
+                        <span>Perfekten Post erstellen</span>
+                    </button>
+
+                    <div class="loading-state" id="loadingState">
+                        <span>Erstelle Ihren perfekten FINE TO DINE Post...</span>
+                    </div>
+
+                    <div class="error-message" id="errorMessage"></div>
+                </form>
+            </div>
+
+            <!-- Result Section -->
+            <div class="card result-card" id="resultCard">
+                <h2 class="result-title">
+                    <span class="material-symbols-outlined">campaign</span>
+                    Ihr fertiger Post
+                </h2>
+
+                <div class="result-content" id="resultContent">
+                    ✨ Verwandeln Sie Ihre Restaurant-Geschichte in einen ansprechenden Social Media Post.<br>
+                    Einfach Artikel eingeben und "Perfekten Post erstellen" klicken.
+                </div>
+
+                <div class="result-actions">
+                    <button class="btn-secondary primary" onclick="copyToClipboard()">
+                        <span class="material-symbols-outlined">content_copy</span>
+                        <span>Kopieren</span>
+                    </button>
+                    <button class="btn-secondary" onclick="sharePost()">
+                        <span class="material-symbols-outlined">share</span>
+                        <span>Teilen</span>
+                    </button>
+                    <button class="btn-secondary" onclick="newPost()">
+                        <span class="material-symbols-outlined">refresh</span>
+                        <span>Nächster Post</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
+    <script type="module">
+        // FIXED: Auth0 State Problem gelöst
+        class ProtectedApp {
+            #auth0Client = null;
+            #user = null;
+            #config = {
+                domain: 'dev-j7lkspndihsozye4.eu.auth0.com',
+                clientId: 'a8wqmdKF8OgorCzddR6mFmdSdQCf0vmq',
+                authorizationParams: {
+                    redirect_uri: `${window.location.origin}/app/`
+                },
+                // CRITICAL: Cache location für State persistence
+                cacheLocation: 'localstorage',
+                useRefreshTokens: true
+            };
+
+            constructor() {
+                this.#initializeAuth();
+                this.#bindEvents();
+            }
+
+            async #initializeAuth() {
+                try {
+                    console.log('🚀 Starting app initialization...');
+                    console.log('Current URL:', window.location.href);
+
+                    this.#auth0Client = await auth0.createAuth0Client(this.#config);
+                    console.log('✅ Auth0 client created');
+
+                    // Handle OAuth callback mit verbesserter Error-Behandlung
+                    if (window.location.search.includes('code=')) {
+                        console.log('🔄 Handling OAuth callback...');
+                        try {
+                            await this.#auth0Client.handleRedirectCallback();
+                            console.log('✅ Callback handled successfully');
+                            // Clean URL after successful callback
+                            window.history.replaceState({}, document.title, window.location.pathname);
+                        } catch (callbackError) {
+                            console.error('❌ Callback handling failed:', callbackError);
+
+                            // Bei State-Error: Force neu-authentifizierung
+                            if (callbackError.message.includes('Invalid state') || callbackError.message.includes('state')) {
+                                console.log('🔧 State error detected - forcing re-authentication');
+                                // URL cleanen
+                                window.history.replaceState({}, document.title, window.location.pathname);
+                                // Cache clearen
+                                await this.#clearAuth0Cache();
+                                // Force login
+                                this.#redirectToLogin();
+                                return;
+                            }
+                            throw callbackError;
+                        }
+                    }
+
+                    // Check authentication status
+                    console.log('🔐 Checking authentication status...');
+                    if (await this.#auth0Client.isAuthenticated()) {
+                        console.log('✅ User is authenticated');
+                        this.#user = await this.#auth0Client.getUser();
+                        this.#showApp();
+                    } else {
+                        console.log('❌ User not authenticated - redirecting to login');
+                        this.#redirectToLogin();
+                    }
+                } catch (error) {
+                    console.error('💥 Auth0 initialization failed:', error);
+                    await this.#clearAuth0Cache();
+                    this.#redirectToLogin();
+                }
+            }
+
+            // 🔧 ERSETZE die #clearAuth0Cache() Funktion mit dieser verbesserten Version:
+
+            async #clearAuth0Cache() {
+                try {
+                    console.log('🧹 Starting Auth0 cache cleanup...');
+
+                    // Alle Auth0-bezogenen Storage-Einträge löschen
+                    const localStorageKeys = Object.keys(localStorage).filter(key =>
+                        key.startsWith('@@auth0spajs@@') ||
+                        key.includes('auth0') ||
+                        key.includes('a8wqmdKF8OgorCzddR6mFmdSdQCf0vmq') ||
+                        key.includes('dev-j7lkspndihsozye4')
+                    );
+                    localStorageKeys.forEach(key => {
+                        console.log('🗑️ Removing localStorage key:', key);
+                        localStorage.removeItem(key);
+                    });
+
+                    const sessionStorageKeys = Object.keys(sessionStorage).filter(key =>
+                        key.startsWith('@@auth0spajs@@') ||
+                        key.includes('auth0') ||
+                        key.includes('a8wqmdKF8OgorCzddR6mFmdSdQCf0vmq') ||
+                        key.includes('dev-j7lkspndihsozye4')
+                    );
+                    sessionStorageKeys.forEach(key => {
+                        console.log('🗑️ Removing sessionStorage key:', key);
+                        sessionStorage.removeItem(key);
+                    });
+
+                    // User-State zurücksetzen
+                    this.#user = null;
+
+                    console.log('✅ Auth0 cache cleanup completed');
+
+                } catch (error) {
+                    console.error('⚠️ Cache clearing failed:', error);
+                }
+            }
+
+            #showApp() {
+                document.getElementById('authLoading').classList.add('hidden');
+                document.getElementById('mainApp').classList.add('visible');
+                this.#loadUserProfile();
+            }
+
+            #redirectToLogin() {
+                if ('navigation' in window) {
+                    window.navigation.navigate('/login.html');
+                } else {
+                    window.location.href = '/login.html';
+                }
+            }
+
+            #loadUserProfile() {
+                const userAvatar = document.getElementById('userAvatar');
+                const userName = document.getElementById('userName');
+                const userEmail = document.getElementById('userEmail');
+
+                if (this.#user) {
+                    userAvatar.src = this.#user.picture || `https://ui-avatars.com/api/?name=${encodeURIComponent(this.#user.name || this.#user.email)}&background=8B2252&color=FFFFFF`;
+                    userName.textContent = this.#user.name || this.#user.email;
+                    userEmail.textContent = this.#user.email;
+                }
+            }
+
+            #bindEvents() {
+                // Logout functionality - FIXED
+                document.getElementById('logoutButton')?.addEventListener('click', async (event) => {
+                    event.preventDefault();
+                    console.log('🔓 Logout button clicked');
+
+                    try {
+                        // UI Feedback
+                        const button = event.target.closest('button');
+                        const originalContent = button.innerHTML;
+                        button.innerHTML = '<span class="material-symbols-outlined">logout</span><span>Wird abgemeldet...</span>';
+                        button.disabled = true;
+
+                        // 1. Lokalen Cache clearen
+                        await this.#clearAuth0Cache();
+
+                        // 2. Direkt zu Auth0 Logout-URL redirecten (WICHTIG!)
+                        const logoutUrl = `https://${this.#config.domain}/v2/logout?` +
+                            `client_id=${this.#config.clientId}&` +
+                            `returnTo=${encodeURIComponent(`${window.location.origin}/login.html`)}`;
+                        // federated= Parameter komplett entfernt
+
+                        console.log('🔄 Redirecting to Auth0 logout:', logoutUrl);
+
+                        // KRITISCH: Direkter Redirect, NICHT Auth0 SDK verwenden
+                        window.location.href = logoutUrl;
+
+                    } catch (error) {
+                        console.error('💥 Logout failed:', error);
+                        // Fallback: Hard-Reload zur Login-Seite
+                        window.location.href = '/login.html';
+                    }
+                });
+
+                // Form submission
+                document.getElementById('postForm')?.addEventListener('submit', (e) => this.#handleFormSubmit(e));
+            }
+
+            async #handleFormSubmit(event) {
+                event.preventDefault();
+
+                const magazinText = document.getElementById('magazinText')?.value.trim();
+                if (!magazinText) {
+                    this.#showError('Bitte geben Sie einen Restaurant-Artikel ein.');
+                    return;
+                }
+
+                const submitButton = document.querySelector('button[type="submit"]');
+                const loadingState = document.getElementById('loadingState');
+                const resultCard = document.getElementById('resultCard');
+                const errorMessage = document.getElementById('errorMessage');
+
+                // UI Updates
+                submitButton.disabled = true;
+                loadingState?.classList.add('active');
+                resultCard?.classList.remove('visible');
+                errorMessage?.classList.remove('active');
+
+                try {
+                    // Get Auth0 token for secure API call
+                    const token = await this.#auth0Client.getTokenSilently();
+
+                    const response = await fetch('/.netlify/functions/generate', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ magazinText })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        document.getElementById('resultContent').textContent = data.content;
+                        resultCard?.classList.add('visible');
+                        resultCard?.classList.add('success-animation');
+
+                        // Remove animation class after completion
+                        setTimeout(() => {
+                            resultCard?.classList.remove('success-animation');
+                        }, 600);
+                    } else {
+                        this.#showError(data.error || 'Ein Fehler ist aufgetreten.');
+                    }
+                } catch (error) {
+                    console.error('Post generation failed:', error);
+                    this.#showError('Verbindungsfehler. Bitte versuchen Sie es erneut.');
+                } finally {
+                    submitButton.disabled = false;
+                    loadingState?.classList.remove('active');
+                }
+            }
+
+            #showError(message) {
+                const errorElement = document.getElementById('errorMessage');
+                if (errorElement) {
+                    errorElement.textContent = message;
+                    errorElement.classList.add('active');
+
+                    // Auto-hide after 5 seconds
+                    setTimeout(() => {
+                        errorElement.classList.remove('active');
+                    }, 5000);
+                }
+            }
+        }
+
+        // Utility Functions (Global for onclick handlers)
+        window.copyToClipboard = async function () {
+            const content = document.getElementById('resultContent')?.textContent;
+            if (!content || content.includes('Verwandeln Sie Ihre Restaurant-Geschichte')) return;
+
+            try {
+                await navigator.clipboard.writeText(content);
+                const btn = event.target.closest('button');
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = '<span class="material-symbols-outlined">done</span><span>Kopiert!</span>';
+                btn.classList.add('success-animation');
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.classList.remove('success-animation');
+                }, 2000);
+            } catch (error) {
+                console.error('Copy failed:', error);
+            }
+        };
+
+        window.sharePost = function () {
+            const content = document.getElementById('resultContent')?.textContent;
+            if (!content || content.includes('Verwandeln Sie Ihre Restaurant-Geschichte')) return;
+
+            if (navigator.share) {
+                navigator.share({
+                    title: 'FINE TO DINE Social Media Post',
+                    text: content
+                }).catch(console.error);
+            } else {
+                window.copyToClipboard();
+            }
+        };
+
+        window.newPost = function () {
+            const magazinText = document.getElementById('magazinText');
+            const resultCard = document.getElementById('resultCard');
+            const errorMessage = document.getElementById('errorMessage');
+            const resultContent = document.getElementById('resultContent');
+
+            if (magazinText) magazinText.value = '';
+            resultCard?.classList.remove('visible');
+            errorMessage?.classList.remove('active');
+
+            // Reset result content to placeholder
+            if (resultContent) {
+                resultContent.innerHTML = '✨ Verwandeln Sie Ihre Restaurant-Geschichte in einen ansprechenden Social Media Post.<br>Einfach Artikel eingeben und "Perfekten Post erstellen" klicken.';
+            }
+
+            magazinText?.focus();
+        };
+
+        // Initialize App
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => new ProtectedApp());
+        } else {
+            new ProtectedApp();
+        }
+    </script>
+</body>
+
+</html>
