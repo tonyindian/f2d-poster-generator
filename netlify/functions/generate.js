@@ -121,6 +121,59 @@ function sanitizeInput(text) {
     return sanitized;
 }
 
+// 🤖 CLAUDE API CALL MIT PROFESSIONAL RETRY LOGIC
+async function callClaudeWithRetry(prompt, maxRetries = 3) {
+    for (let attempt = 0; attempt < maxRetries; attempt++) {
+        try {
+            console.log(`🔵 Claude API attempt ${attempt + 1}/${maxRetries}`);
+            
+            const response = await fetch('https://api.anthropic.com/v1/messages', {
+                method: 'POST',
+                headers: {
+                    'x-api-key': process.env.CLAUDE_API_KEY,
+                    'content-type': 'application/json',
+                    'anthropic-version': '2023-06-01'
+                },
+                body: JSON.stringify({
+                    model: 'claude-sonnet-4-20250514',
+                    max_tokens: 800,
+                    messages: [{ role: 'user', content: prompt }]
+                }),
+                timeout: 25000
+            });
+
+            if (response.ok) {
+                console.log('🟢 Claude API success');
+                return response;
+            }
+
+            // Retry nur bei 529 (overloaded) und 5xx Server-Errors
+            if (response.status === 529 || response.status >= 500) {
+                if (attempt < maxRetries - 1) {
+                    // Exponential backoff: 2s, 4s, 8s mit Jitter
+                    const baseDelay = Math.pow(2, attempt + 1) * 1000;
+                    const jitter = Math.random() * 1000; // 0-1s jitter
+                    const delay = baseDelay + jitter;
+                    
+                    console.log(`🟡 Retrying in ${Math.round(delay/1000)}s (HTTP ${response.status})`);
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    continue;
+                }
+            }
+
+            throw new Error(`Claude API Error: ${response.status}`);
+            
+        } catch (error) {
+            if (attempt === maxRetries - 1) throw error;
+            
+            // Network timeout - auch retry
+            const delay = Math.pow(2, attempt + 1) * 1000 + Math.random() * 1000;
+            console.log(`🔴 Network error, retrying in ${Math.round(delay/1000)}s: ${error.message}`);
+            await new Promise(resolve => setTimeout(resolve, delay));
+        }
+    }
+}
+
 // 🔒 MAIN HANDLER MIT VOLLSTÄNDIGER SECURITY
 exports.handler = async (event, context) => {
     // Standard headers
@@ -186,7 +239,7 @@ exports.handler = async (event, context) => {
             remainingRequests: rateLimitResult.headers['X-RateLimit-Remaining']
         });
 
-        // 🤖 6. CLAUDE API CALL (unverändert)
+        // 🤖 6. CLAUDE API CALL
         const prompt = `Erstelle einen Social Media Post für Facebook/Instagram im FINE TO DINE Stil:
 
 DENKE IN DIESEN ELEMENTEN:
@@ -214,73 +267,16 @@ ARTIKEL: ${sanitizedText}
 
 Erstelle den Post mit dieser exakten Struktur (nur plain text, kein Markdown):`;
 
-c// 🤖 6. CLAUDE API CALL MIT PROFESSIONAL RETRY LOGIC
-async function callClaudeWithRetry(prompt, maxRetries = 3) {
-    for (let attempt = 0; attempt < maxRetries; attempt++) {
-        try {
-            console.log(`🔵 Claude API attempt ${attempt + 1}/${maxRetries}`);
-            
-            const response = await fetch('https://api.anthropic.com/v1/messages', {
-                method: 'POST',
-                headers: {
-                    'x-api-key': process.env.CLAUDE_API_KEY,
-                    'content-type': 'application/json',
-                    'anthropic-version': '2023-06-01'
-                },
-                body: JSON.stringify({
-                    model: 'claude-sonnet-4-20250514',
-                    max_tokens: 800,
-                    messages: [{ role: 'user', content: prompt }]
-                }),
-                timeout: 25000
-            });
-
-            if (response.ok) {
-                console.log('🟢 Claude API success');
-                return response;
-            }
-
-            // Retry nur bei 529 (overloaded) und 5xx Server-Errors
-            if (response.status === 529 || response.status >= 500) {
-                if (attempt < maxRetries - 1) {
-                    // Exponential backoff: 2s, 4s, 8s mit Jitter
-                    const baseDelay = Math.pow(2, attempt + 1) * 1000;
-                    const jitter = Math.random() * 1000; // 0-1s jitter
-                    const delay = baseDelay + jitter;
-                    
-                    console.log(`🟡 Retrying in ${Math.round(delay/1000)}s (HTTP ${response.status})`);
-                    await new Promise(resolve => setTimeout(resolve, delay));
-                    continue;
-                }
-            }
-
-            throw new Error(`Claude API Error: ${response.status}`);
-            
-        } catch (error) {
-            if (attempt === maxRetries - 1) throw error;
-            
-            // Network timeout - auch retry
-            const delay = Math.pow(2, attempt + 1) * 1000 + Math.random() * 1000;
-            console.log(`🔴 Network error, retrying in ${Math.round(delay/1000)}s: ${error.message}`);
-            await new Promise(resolve => setTimeout(resolve, delay));
-        }
-    }
-}
-
-// Verwende die Retry-Function
-const response = await callClaudeWithRetry(prompt);
-console.log('🔵 Claude API finished');
-
-        if (!response.ok) {
-            throw new Error(`Claude API Error: ${response.status}`);
-        }
+        // Call Claude API with retry logic
+        const response = await callClaudeWithRetry(prompt);
+        console.log('🔵 Claude API finished');
 
         const data = await response.json();
         console.log('🔵 JSON parsed');
         const rawContent = data.content[0].text;
         console.log('🔵 Content extracted');
 
-        // STEP 2: JavaScript wendet zuverlässige Unicode-Formatierung an
+        // 🎨 7. APPLY UNICODE FORMATTING
         const formattedContent = applyFineToDineFormatting(rawContent);
         console.log('🔵 Formatting finished');
         
