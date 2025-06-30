@@ -139,7 +139,7 @@ async function callClaudeWithRetry(prompt, maxRetries = 3) {
                     max_tokens: 600,  // ← Schnellere Generation
                     messages: [{ role: 'user', content: prompt }]
                 }),
-                timeout: 8000      // ← Bleibt unter 10s Netlify Limit
+                timeout: 6000      // ← Bleibt unter 10s Netlify Limit
             });
 
             if (response.ok) {
