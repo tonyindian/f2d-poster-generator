@@ -3,7 +3,7 @@ const crypto = require('crypto');
 
 function createRateLimitMiddleware(options = {}) {
     const {
-        maxRequests = 10,           // Requests pro Zeitfenster
+        maxRequests = 3,           // Requests pro Zeitfenster
         windowMs = 3600000,         // 1 Stunde in Milliseconds
         keyGenerator = defaultKeyGenerator,
         skipSuccessfulRequests = false,
