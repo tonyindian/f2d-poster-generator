@@ -101,3 +101,12 @@
     font-size: 1rem;
     color: #1A1A1A;
 }
+
+/* Browser Extension Override */
+.card .form-textarea:focus {
+    background: rgba(255, 255, 255, 0.95) !important;
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    border-color: var(--ftd-primary) !important;
+    box-shadow: 0 0 0 4px rgba(139, 34, 82, 0.12) !important;
+    outline: none !important;
+}
