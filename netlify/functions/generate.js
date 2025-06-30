@@ -1,4 +1,20 @@
 const fetch = require('node-fetch');
+const { validateCSRFToken } = require('./utils/csrf-validator');
+const { createRateLimitMiddleware } = require('./utils/rate-limit-middleware');
+
+// Rate Limiter Configuration
+const rateLimitMiddleware = createRateLimitMiddleware({
+    maxRequests: 5,           // 5 requests per hour (Claude ist teuer!)
+    windowMs: 3600000,        // 1 Stunde
+    onLimitReached: (event, result) => {
+        // Additional logging/alerting bei Rate Limit
+        console.error('RATE LIMIT ALERT:', {
+            ip: event.headers['x-forwarded-for'],
+            timestamp: new Date().toISOString(),
+            resetTime: new Date(result.resetTime).toISOString()
+        });
+    }
+});
 
 // Unicode Character Maps - VOLLSTÄNDIG
 const UNICODE_BOLD = {
@@ -76,37 +92,101 @@ function applyFineToDineFormatting(text) {
     return processedLines.join('\n');
 }
 
+// 🔒 SICHERE INPUT VALIDATION
+function sanitizeInput(text) {
+    if (!text || typeof text !== 'string') {
+        throw new Error('Invalid input type');
+    }
+    
+    // Length validation
+    if (text.length > 10000) {
+        throw new Error('Input too long');
+    }
+    
+    if (text.length < 10) {
+        throw new Error('Input too short');
+    }
+    
+    // Remove potentially dangerous patterns
+    const sanitized = text
+        .replace(/[<>\"'&]/g, '') // XSS prevention
+        .replace(/\b(system|admin|root|exec|eval|script|SELECT|DROP|INSERT|UPDATE|DELETE)\b/gi, '') // Injection prevention
+        .replace(/\s+/g, ' ') // Normalize whitespace
+        .trim();
+    
+    if (!sanitized) {
+        throw new Error('Input contains only invalid characters');
+    }
+    
+    return sanitized;
+}
+
+// 🔒 MAIN HANDLER MIT VOLLSTÄNDIGER SECURITY
 exports.handler = async (event, context) => {
-    const headers = {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'Content-Type',
+    // Standard headers
+    const baseHeaders = {
+        'Access-Control-Allow-Origin': process.env.ALLOWED_ORIGIN || '*',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-CSRF-Token',
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
     };
 
     if (event.httpMethod === 'OPTIONS') {
-        return { statusCode: 200, headers, body: '' };
+        return { statusCode: 200, headers: baseHeaders, body: '' };
     }
 
     if (event.httpMethod !== 'POST') {
         return {
             statusCode: 405,
-            headers,
+            headers: baseHeaders,
             body: JSON.stringify({ error: 'Method not allowed' })
         };
     }
 
     try {
-        const { magazinText } = JSON.parse(event.body);
+        // 🚀 1. RATE LIMITING CHECK (FIRST!)
+        const rateLimitResult = rateLimitMiddleware(event);
+        if (!rateLimitResult.allowed) {
+            return rateLimitResult.response;
+        }
         
-        if (!magazinText) {
+        // Add rate limit headers to base headers
+        const headers = { ...baseHeaders, ...rateLimitResult.headers };
+
+        // 🔒 2. VALIDATE AUTHORIZATION
+        const authHeader = event.headers.authorization;
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
             return {
-                statusCode: 400,
+                statusCode: 401,
                 headers,
-                body: JSON.stringify({ error: 'No text provided' })
+                body: JSON.stringify({ error: 'Unauthorized - missing token' })
             };
         }
 
-        // OPTIMIERTER CLAUDE PROMPT - Fokus auf Content-Struktur
+        // 🔒 3. VALIDATE CSRF TOKEN  
+        const csrfToken = event.headers['x-csrf-token'];
+        if (!validateCSRFToken(csrfToken)) {
+            console.error('Invalid CSRF token:', csrfToken ? 'provided' : 'missing');
+            return {
+                statusCode: 403,
+                headers,
+                body: JSON.stringify({ error: 'Invalid CSRF token' })
+            };
+        }
+
+        // 🔒 4. VALIDATE AND SANITIZE INPUT
+        const { magazinText } = JSON.parse(event.body);
+        const sanitizedText = sanitizeInput(magazinText);
+
+        // 🔒 5. LOG SECURITY EVENT
+        console.log('Secure request processed:', {
+            timestamp: new Date().toISOString(),
+            ip: event.headers['x-forwarded-for'] || 'unknown',
+            userAgent: event.headers['user-agent'] || 'unknown',
+            inputLength: sanitizedText.length,
+            remainingRequests: rateLimitResult.headers['X-RateLimit-Remaining']
+        });
+
+        // 🤖 6. CLAUDE API CALL (unverändert)
         const prompt = `Erstelle einen Social Media Post für Facebook/Instagram im FINE TO DINE Stil:
 
 DENKE IN DIESEN ELEMENTEN:
@@ -130,11 +210,10 @@ Erlebe weltoffene Bodenständigkeit auf Sterne-Niveau mit deinem FINE TO DINE Gu
 
 #FINETODINE #Gais #MichelinStern #GaultMillau
 
-ARTIKEL: ${magazinText}
+ARTIKEL: ${sanitizedText}
 
 Erstelle den Post mit dieser exakten Struktur (nur plain text, kein Markdown):`;
 
-        // STEP 1: Claude generiert Content
         const response = await fetch('https://api.anthropic.com/v1/messages', {
             method: 'POST',
             headers: {
@@ -168,18 +247,30 @@ Erstelle den Post mit dieser exakten Struktur (nur plain text, kein Markdown):`;
             body: JSON.stringify({ 
                 success: true, 
                 content: formattedContent,
-                timestamp: new Date().toISOString()
+                timestamp: new Date().toISOString(),
+                remaining: rateLimitResult.headers['X-RateLimit-Remaining']
             })
         };
 
     } catch (error) {
-        console.error('Function Error:', error);
+        // 🔒 SECURE ERROR HANDLING
+        const errorId = Date.now().toString(36) + Math.random().toString(36).substr(2);
+        
+        console.error('Secure function error:', {
+            errorId,
+            message: error.message,
+            stack: error.stack,
+            timestamp: new Date().toISOString(),
+            ip: event.headers['x-forwarded-for'] || 'unknown'
+        });
+        
         return {
             statusCode: 500,
-            headers,
+            headers: baseHeaders,
             body: JSON.stringify({ 
                 success: false, 
-                error: error.message 
+                error: 'Internal server error',
+                errorId // Für Support-Tickets
             })
         };
     }

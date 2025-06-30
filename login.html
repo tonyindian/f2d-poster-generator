@@ -81,34 +81,37 @@
     <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
     <script type="module">
         // Modern ES2025 Auth0 Integration
-        class AuthManager {
+        // 🔒 Secure Auth Manager - Config vom Server laden
+        class SecureAuthManager {
             #auth0Client = null;
-            #config = {
-                domain: 'dev-j7lkspndihsozye4.eu.auth0.com',
-                clientId: 'a8wqmdKF8OgorCzddR6mFmdSdQCf0vmq',
-                authorizationParams: {
-                    redirect_uri: `${window.location.origin}/app/`,
-                },
-                cacheLocation: 'localstorage',
-                useRefreshTokens: true
-            };
+            #config = null;
             
             constructor() {
-                this.#initializeAuth();
+                this.#loadSecureConfig();
                 this.#bindEvents();
+            }
+            
+            async #loadSecureConfig() {
+                try {
+                    const response = await fetch('/.netlify/functions/auth-config');
+                    if (!response.ok) throw new Error('Config load failed');
+                    
+                    this.#config = await response.json();
+                    await this.#initializeAuth();
+                } catch (error) {
+                    this.#showError('Konfiguration konnte nicht geladen werden.');
+                    console.error('Config loading failed:', error);
+                }
             }
             
             async #initializeAuth() {
                 try {
-                    // Use globaly loaded Auth0
                     this.#auth0Client = await auth0.createAuth0Client(this.#config);
                     
-                    // Check if already authenticated
                     if (await this.#auth0Client.isAuthenticated()) {
                         this.#redirectToApp();
                     }
                     
-                    // Handle OAuth callback
                     if (window.location.search.includes('code=')) {
                         await this.#handleCallback();
                     }
@@ -196,10 +199,11 @@
         
         // Initialize when DOM is ready
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => new AuthManager());
+            document.addEventListener('DOMContentLoaded', () => new SecureAuthManager());
         } else {
-            new AuthManager();
+            new SecureAuthManager();
         }
+
     </script>
 </body>
 </html>
