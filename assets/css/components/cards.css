@@ -228,7 +228,7 @@
 /* === CARD SUBTITLES & DESCRIPTIONS === */
 .header-text p {
     background: rgba(255, 255, 255, 0.95);
-    color: var(--neutral-900);
+    color: var(--ftd-primary);
     font-size: var(--text-body-medium);
     font-weight: 600;
     padding: var(--space-8) var(--space-16);
