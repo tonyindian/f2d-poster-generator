@@ -136,10 +136,10 @@ async function callClaudeWithRetry(prompt, maxRetries = 3) {
                 },
                 body: JSON.stringify({
                     model: 'claude-sonnet-4-20250514',
-                    max_tokens: 800,
+                    max_tokens: 600,  // ← Schnellere Generation
                     messages: [{ role: 'user', content: prompt }]
                 }),
-                timeout: 25000
+                timeout: 8000      // ← Bleibt unter 10s Netlify Limit
             });
 
             if (response.ok) {
