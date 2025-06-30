@@ -21,7 +21,8 @@
     min-height: 320px;
     max-height: 400px;
     padding: var(--space-24);
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    border: 2px solid transparent;
+    box-sizing: border-box;
     border-radius: var(--shape-large);
     font-family: var(--font-ui);
     font-size: var(--text-body-large);    /* Jetzt 1.125rem für bessere Lesbarkeit */

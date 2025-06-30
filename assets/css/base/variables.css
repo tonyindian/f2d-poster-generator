@@ -61,10 +61,11 @@
 --text-caption: 0.75rem;         /* Smallest text - nur für Captions */
 
 /* High-Contrast Text Hierarchie */
+/* High-Contrast Text Hierarchie */
 --text-primary: var(--text-high-contrast);     /* Haupttext - 21:1 */
 --text-secondary: var(--text-medium-contrast); /* Sekundärtext - 12.6:1 */
 --text-tertiary: #666666;                      /* Labels - 7:1 */
-
+--text-dark: #1A1A1A;                          /* Login-Style dunkelgrau */
 
 /* WCAG 2.2 Line-Height Standards */
 --line-height-tight: 1.25;     /* Nur für Headlines */

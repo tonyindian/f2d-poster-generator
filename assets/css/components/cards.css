@@ -228,7 +228,7 @@
 /* === CARD SUBTITLES & DESCRIPTIONS === */
 .header-text p {
     background: rgba(255, 255, 255, 0.95);
-    color: var(--ftd-primary);
+    color: var(--text-dark);
     font-size: var(--text-body-medium);
     font-weight: 600;
     padding: var(--space-8) var(--space-16);
@@ -240,7 +240,7 @@
 }
 
 .brand-subtitle {
-    color: #1A1A1A;
+    color: var(--text-dark);
     font-size: var(--text-title-large);
     font-weight: 600;
     margin-bottom: var(--space-12);
@@ -253,7 +253,7 @@
 }
 
 .brand-description {
-    color: #1A1A1A;
+    color: var(--text-dark);
     font-size: var(--text-body-large);
     line-height: 1.6;
     margin-bottom: var(--space-48);
