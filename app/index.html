@@ -341,8 +341,12 @@
                 const resultCard = document.getElementById('resultCard');
                 const errorMessage = document.getElementById('errorMessage');
 
+                // 🚨 PREVENT DOUBLE SUBMISSION
+                if (submitButton.disabled) return; // Exit if already processing
+
                 // UI Updates
                 submitButton.disabled = true;
+                submitButton.innerHTML = '<span class="material-symbols-outlined btn-icon">hourglass_empty</span><span>Erstelle Post...</span>';
                 loadingState?.classList.add('active');
                 resultCard?.classList.remove('visible');
                 errorMessage?.classList.remove('active');
@@ -402,7 +406,9 @@
                         this.#showError('Verbindungsfehler. Bitte versuchen Sie es erneut.');
                     }
                 } finally {
+                    // 🚨 ALWAYS RE-ENABLE BUTTON
                     submitButton.disabled = false;
+                    submitButton.innerHTML = '<span class="material-symbols-outlined btn-icon">auto_awesome</span><span>Perfekten Post erstellen</span>';
                     loadingState?.classList.remove('active');
                 }
             }
