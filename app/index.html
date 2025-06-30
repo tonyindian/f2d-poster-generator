@@ -292,8 +292,8 @@
                         // 2. Direkt zu Auth0 Logout-URL redirecten (WICHTIG!)
                         const logoutUrl = `https://${this.#config.domain}/v2/logout?` +
                             `client_id=${this.#config.clientId}&` +
-                            `returnTo=${encodeURIComponent(`${window.location.origin}/login.html`)}&` +
-                            `federated=`;
+                            `returnTo=${encodeURIComponent(`${window.location.origin}/login.html`)}`;
+                        // federated= Parameter komplett entfernt
 
                         console.log('🔄 Redirecting to Auth0 logout:', logoutUrl);
 
