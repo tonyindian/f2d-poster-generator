@@ -214,6 +214,7 @@ ARTIKEL: ${sanitizedText}
 
 Erstelle den Post mit dieser exakten Struktur (nur plain text, kein Markdown):`;
 
+console.log('🔵 Starting Claude API call...');
         const response = await fetch('https://api.anthropic.com/v1/messages', {
             method: 'POST',
             headers: {
@@ -230,16 +231,20 @@ Erstelle den Post mit dieser exakten Struktur (nur plain text, kein Markdown):`;
                 }]
             })
         });
+        console.log('🔵 Claude API finished');
 
         if (!response.ok) {
             throw new Error(`Claude API Error: ${response.status}`);
         }
 
         const data = await response.json();
+        console.log('🔵 JSON parsed');
         const rawContent = data.content[0].text;
+        console.log('🔵 Content extracted');
 
         // STEP 2: JavaScript wendet zuverlässige Unicode-Formatierung an
         const formattedContent = applyFineToDineFormatting(rawContent);
+        console.log('🔵 Formatting finished');
         
         return {
             statusCode: 200,
