@@ -47,7 +47,7 @@ function applyFineToDineFormatting(text) {
     formatted = formatted.replace(/\*\*(.*?)\*\*/g, '$1'); // **text** → text
     formatted = formatted.replace(/\*(.*?)\*/g, '$1');     // *text* → text
     
-    // SCHRITT 1: TITEL-FORMATIERUNG (erste Zeile als Bold)
+    // SCHRITT 1: TITEL-FORMATIERUNG (erste Zeile als Bold Serif)
     const lines = formatted.split('\n');
     if (lines.length > 0) {
         const firstLine = lines[0].trim();
@@ -58,20 +58,31 @@ function applyFineToDineFormatting(text) {
         }
     }
     
-    // SCHRITT 2: CTA-FORMATIERUNG (Zeilen die "Erlebe" enthalten)
+    // SCHRITT 2: CTA-FORMATIERUNG (Zeilen die "Erlebe" oder "Entdecke" enthalten)
     const processedLines = formatted.split('\n').map(line => {
-        if (line.includes('Erlebe')) {
-            const erlebeIndex = line.indexOf('Erlebe');
-            if (erlebeIndex !== -1) {
-                const beforeErlebe = line.substring(0, erlebeIndex);
-                const erlebeAndAfter = line.substring(erlebeIndex);
-                return beforeErlebe + toItalic(erlebeAndAfter);
+        if (line.includes('Erlebe') || line.includes('Entdecke')) {
+            const startWords = ['Erlebe', 'Entdecke'];
+            for (const word of startWords) {
+                const wordIndex = line.indexOf(word);
+                if (wordIndex !== -1) {
+                    const beforeWord = line.substring(0, wordIndex);
+                    const wordAndAfter = line.substring(wordIndex);
+                    return beforeWord + toItalic(wordAndAfter);
+                }
             }
         }
         return line;
     });
     
-    return processedLines.join('\n');
+    // SCHRITT 3: VERANSTALTUNGSTIPP-FORMATIERUNG (Bold Sans-Serif)
+    const finalLines = processedLines.map(line => {
+        if (line.toLowerCase().includes('veranstaltungstipp')) {
+            return toBold(line);
+        }
+        return line;
+    });
+    
+    return finalLines.join('\n');
 }
 
 // INPUT VALIDATION für Formatting
@@ -88,7 +99,13 @@ function validateFormatInput(text) {
         throw new Error('Text too short for formatting');
     }
     
-    return text.trim();
+    // Add same sanitization as generate function
+    const sanitized = text
+        .replace(/[<>\"'&]/g, '') // XSS prevention
+        .replace(/\b(system|admin|root|exec|eval|script|SELECT|DROP|INSERT|UPDATE|DELETE)\b/gi, '') // Injection prevention
+        .trim();
+    
+    return sanitized;
 }
 
 // 🚀 MAIN HANDLER - ULTRA FAST FORMATTING ONLY

@@ -45,7 +45,7 @@ async function callClaudeHaikuAPI(prompt) {
             },
             body: JSON.stringify({
                 model: 'claude-3-5-haiku-20241022', // 🚀 HAIKU = 2x faster!
-                max_tokens: 300, // Optimal for social posts
+                max_tokens: 500, // Increased for detailed FINE TO DINE style
                 messages: [{ role: 'user', content: prompt }]
             }),
             signal: controller.signal
@@ -123,16 +123,32 @@ exports.handler = async (event, context) => {
             inputLength: sanitizedText.length
         });
 
-        // 🚀 OPTIMIZED PROMPT FOR HAIKU (shorter = faster)
-        const prompt = `Erstelle einen Social Media Post für FINE TO DINE:
+        // 🚀 FINE TO DINE STYLE PROMPT - Exact Magazine Style
+        const prompt = `Erstelle einen Social Media Post für FINE TO DINE basierend auf diesem Magazinartikel. 
 
-STRUKTUR (4 Zeilen):
-1. Restaurant + Ort - Hauptmerkmal!
-2. Kurze Küchen-Beschreibung
-3. "Erlebe [X] mit deinem FINE TO DINE Gutschein!"
-4. #FINETODINE #[Ort] #[Merkmal]
+STRUKTUR & FORMATIERUNG:
+1. TITEL: Restaurant + Ort - Kernaussage! (wird zu Unicode Bold Serif)
+2. HAUPTTEXT: Detaillierte Beschreibung (3-4 Sätze, normaler Text)
+3. CTA: "Erlebe/Entdecke [X] mit deinem FINE TO DINE Gutschein!" (wird zu Unicode Italic)
+4. HASHTAGS: #FINETODINE #[Ort] #[Spezifika] 
+5. VERANSTALTUNGSTIPP: Falls Events erwähnt (wird zu Bold Sans-Serif)
 
-Nur plain text, max 250 Zeichen!
+STIL-RICHTLINIEN:
+- Verwende Namen der Köche/Gastgeber aus dem Artikel
+- Erwähne spezifische Details: Auszeichnungen, Spezialitäten, Atmosphäre
+- Beschreibe die kulinarische Philosophie und Besonderheiten
+- Nutze emotionale und ansprechende Sprache
+- Strukturiere wie ein Magazinartikel - informativ aber zugänglich
+
+BEISPIEL-STRUKTUR (basierend auf dem Truube-Stil):
+"Restaurant Truube Gais - Bodenständigkeit mit Michelin-Stern!
+Silvia Manser, eine der wenigen Spitzenköchinnen im Land, verzaubert mit grundehrlicher und weltoffener Küche. Erstklassige regionale Produkte, bedingungslose Frische - vom Amuse-Bouche bis zu hausgemachten Friandises. Besonderes Erlebnis: der Gasttisch neben der Küche für Live-Einblicke!
+
+Erlebe weltoffene Bodenständigkeit auf Sterne-Niveau mit deinem FINE TO DINE Gutschein!
+
+#FINETODINE #Gais #MichelinStern #GaultMillau #Spitzenköchin"
+
+WICHTIG: Nur plain text! Keine Markdown-Formatierung (**bold**, *italic*). Die Formatierung wird automatisch angewendet.
 
 ARTIKEL: ${sanitizedText}`;
 
