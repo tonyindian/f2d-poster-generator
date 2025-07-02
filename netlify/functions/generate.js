@@ -1,5 +1,5 @@
-// 🚀 ULTIMATE SOLUTION: Claude 3.5 Haiku for Speed + Reliability
-// Based on research: Haiku is 2x faster with 3.8x lower cost
+// 🚀 OPTIMIZED FINE TO DINE GENERATOR - 2025 BEST PRACTICES INTEGRATED
+// Based on research from Anthropic, Google AI, AWS, and leading prompt engineering experts
 
 const fetch = require('node-fetch');
 const { validateCSRFToken } = require('./utils/csrf-validator');
@@ -91,7 +91,7 @@ exports.handler = async (event, context) => {
     }
 
     try {
-        // Rate limiting, auth, and CSRF validation (same as before)
+        // Rate limiting, auth, and CSRF validation
         const rateLimitResult = await rateLimitMiddleware(event);
         if (!rateLimitResult.allowed) return rateLimitResult.response;
         
@@ -118,39 +118,94 @@ exports.handler = async (event, context) => {
         const { magazinText } = JSON.parse(event.body);
         const sanitizedText = sanitizeInput(magazinText);
 
-        console.log('🚀 Using Claude 3.5 Haiku for speed:', {
+        console.log('🚀 Using Claude 3.5 Haiku with 2025 best practices:', {
             timestamp: new Date().toISOString(),
             inputLength: sanitizedText.length
         });
 
-        // 🚀 FINE TO DINE STYLE PROMPT - Exact Magazine Style
-        const prompt = `Erstelle einen Social Media Post für FINE TO DINE basierend auf diesem Magazinartikel. 
+        // 🚀 OPTIMIZED FINE TO DINE PROMPT - 2025 BEST PRACTICES INTEGRATED
+        const prompt = `Du bist ein erfahrener Magazin-Autor für luxuriöse Gastronomie-Publikationen. Deine Aufgabe ist es, einen Social Media Post für FINE TO DINE zu erstellen, der die Truube-Qualität als Gold-Standard erreicht.
 
-STRUKTUR & FORMATIERUNG:
-1. TITEL: Restaurant + Ort - Kernaussage! (wird zu Unicode Bold Serif)
-2. HAUPTTEXT: Detaillierte Beschreibung (3-4 Sätze, normaler Text)
-3. CTA: "Erlebe/Entdecke [X] mit deinem FINE TO DINE Gutschein!" (wird zu Unicode Italic)
-4. HASHTAGS: #FINETODINE #[Ort] #[Spezifika] 
-5. VERANSTALTUNGSTIPP: Falls Events erwähnt (wird zu Bold Sans-Serif)
+<task_context>
+Erstelle einen Social Media Post im luxuriösen Magazin-Stil für FINE TO DINE, basierend auf dem bereitgestellten Artikel.
+</task_context>
 
-STIL-RICHTLINIEN:
-- Verwende Namen der Köche/Gastgeber aus dem Artikel
-- Erwähne spezifische Details: Auszeichnungen, Spezialitäten, Atmosphäre
-- Beschreibe die kulinarische Philosophie und Besonderheiten
-- Nutze emotionale und ansprechende Sprache
-- Strukturiere wie ein Magazinartikel - informativ aber zugänglich
+<tone_context>
+Sophisticated, warm, einladend - wie ein erstklassiges Gastronomie-Magazin. Verwende poetische Sprache und emotionale Tiefe.
+</tone_context>
 
-BEISPIEL-STRUKTUR (basierend auf dem Truube-Stil):
-"Restaurant Truube Gais - Bodenständigkeit mit Michelin-Stern!
-Silvia Manser, eine der wenigen Spitzenköchinnen im Land, verzaubert mit grundehrlicher und weltoffener Küche. Erstklassige regionale Produkte, bedingungslose Frische - vom Amuse-Bouche bis zu hausgemachten Friandises. Besonderes Erlebnis: der Gasttisch neben der Küche für Live-Einblicke!
+<detailed_instructions>
+STRUKTUR (GOLD-STANDARD):
+1. TITEL: Restaurant + Ort - Überraschender Kontrast/Hook! (wird zu Unicode Bold Serif)
+2. HAUPTTEXT: 5-6 substantielle Sätze mit Tiefe (normaler Text)  
+3. CTA: Kreative "Erlebe [spezifisches Konzept] mit deinem FINE TO DINE Gutschein!" (wird zu Unicode Italic)
+4. HASHTAGS: #FINETODINE #[Ort] #[Spezifika]
 
-Erlebe weltoffene Bodenständigkeit auf Sterne-Niveau mit deinem FINE TO DINE Gutschein!
+DENKE SCHRITT FÜR SCHRITT:
+<thinking>
+1. Analysiere den Artikel nach einzigartigen Details
+2. Identifiziere überraschende Kontraste für den Titel
+3. Finde die Küchenphilosophie und Besonderheiten
+4. Entwickle poetische Phrasen aus den Fakten
+5. Erstelle emotionale Verbindungen zu den Lesern
+</thinking>
+</detailed_instructions>
 
-#FINETODINE #Gais #MichelinStern #GaultMillau #Spitzenköchin"
+<examples>
+GOLD-STANDARD BEISPIEL (TRUUBE-QUALITÄT):
+"𝐁𝐨𝐝𝐞𝐧𝐬𝐭𝐚̈𝐧𝐝𝐢𝐠𝐤𝐞𝐢𝐭 𝐦𝐢𝐭 𝐌𝐢𝐜𝐡𝐞𝐥𝐢𝐧-𝐒𝐭𝐞𝐫𝐧!
+Silvia Manser, eine der wenigen Spitzenköchinnen im Land, verzaubert in ihrem mit einem Michelin-Stern und 17 Gault-Millau-Punkten ausgezeichneten Restaurant Truube in Gais. Aber keine Bange: Hier erwartet Gäste keine überkandidelte Kulinarik, sondern grundehrliche und gleichsam weltoffene Küche mit viel Einfallsreichtum. In der schlicht-eleganten Gaststube basiert alles auf erstklassigen, regionalen Produkten und bedingungsloser Frische - vom Amuse-Bouche bis zu hausgemachten Friandises. Die umliegende Appenzeller Natur inspiriert, aber auch Köstlichkeiten aus aller Welt fliessen mit Fingerspitzengefühl ein. Besonderes Erlebnis: der Gasttisch neben der Küche für Live-Einblicke!
+𝘌𝘳𝘭𝘦𝘣𝘦 𝘚𝘱𝘪𝘵𝘻𝘦𝘯𝘬𝘶̈𝘤𝘩𝘦 𝘮𝘪𝘵 𝘥𝘦𝘪𝘯𝘦𝘮 𝘍𝘐𝘕𝘌 𝘛𝘖 𝘋𝘐𝘕𝘌 𝘎𝘶𝘵𝘴𝘤𝘩𝘦𝘪𝘯!
+#FINETODINE #Gais #MichelinStern #GaultMillau #Spitzenköchin #WeltoffeneKüche"
+</examples>
 
-WICHTIG: Nur plain text! Keine Markdown-Formatierung (**bold**, *italic*). Die Formatierung wird automatisch angewendet.
+<advanced_techniques>
+ZWINGEND ZU VERWENDENDE SPRACH-TECHNIKEN:
+- **Überraschende Kontraste**: "Bodenständigkeit mit Michelin-Stern", "grundehrlich und weltoffene"
+- **Beruhigende Einschübe**: "Aber keine Bange:", "keine Sorge:", "keine überkandidelte..."
+- **Chef-Würdigung**: "eine der wenigen...", "meisterhaft...", "virtuos..."
+- **Spezifische Auszeichnungen**: Punkte, Sterne, Awards mit Zahlen (NUR AUS ARTIKEL!)
+- **Poetische Phrasen**: "mit Fingerspitzengefühl", "mit viel Einfallsreichtum"
+- **Sinnliche Details**: Produktqualität, Frische, Zubereitung
+- **Besondere Erlebnisse**: Einzigartige Features des Restaurants
+- **Philosophische Tiefe**: Küchenphilosophie, Ansatz, Vision
 
-ARTIKEL: ${sanitizedText}`;
+TITEL-HOOKS (ÜBERRASCHEND):
+- "[Unerwartete Kombination]!" 
+- "[Kontrast] mit [Prestige]!"
+- "[Emotion] im [Ort]!"
+- "[Sinnlicher Begriff] [Location]!"
+</advanced_techniques>
+
+<constraints>
+KRITISCH WICHTIG - FAKTENTREUE:
+- VERWENDE NUR FAKTEN AUS DEM ARTIKEL
+- ERFINDE KEINE Details, Namen, Orte, Preise, Auszeichnungen
+- KEINE FANTASIE-ELEMENTE oder Vermutungen
+- Wenn Infos fehlen → elegante, allgemeine Beschreibung
+- AUTHENTIZITÄT hat oberste Priorität
+
+VERMEIDE:
+- Oberflächliche Beschreibungen
+- Corporate-Sprache ("bietet", "präsentiert")
+- Generische Hooks
+- Kurze Posts ohne Tiefe
+- Erfundene Details
+</constraints>
+
+<output_format>
+Erstelle den Post in folgendem Format:
+- Titel in Unicode Bold Serif (𝐁𝐨𝐥𝐝 𝐒𝐞𝐫𝐢𝐟)
+- Haupttext in normaler Schrift
+- CTA in Unicode Italic (𝘐𝘵𝘢𝘭𝘪𝘤)
+- Hashtags am Ende
+
+LÄNGE: Mindestens 5-6 substantielle, detailreiche Sätze für Magazin-Qualität!
+</output_format>
+
+<document>
+${sanitizedText}
+</document>`;
 
         // Ultra-fast Haiku API call
         const response = await callClaudeHaikuAPI(prompt);
