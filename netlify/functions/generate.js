@@ -1,4 +1,4 @@
-// 🚀 FINE TO DINE GENERATOR - Claude 3.5 Sonnet (Reliable)
+// 🚀 FINE TO DINE GENERATOR - Claude 3.5 Sonnet with IMPROVED PROMPT
 const fetch = require('node-fetch');
 
 // Simple rate limiting without external dependencies
@@ -188,39 +188,34 @@ exports.handler = async (event, context) => {
             };
         }
 
-        // 🚀 OPTIMIZED FINE TO DINE PROMPT - Works perfectly with Claude 3.5 Sonnet
-        const prompt = `Du bist ein erfahrener Magazin-Autor für luxuriöse Gastronomie-Publikationen. Erstelle einen Social Media Post im FINE TO DINE Stil.
+        // 🚀 PERFECTED FINE TO DINE PROMPT - Follows exact user style
+        const prompt = `Du bist ein Experte für FINE TO DINE Social Media Posts. Erstelle einen Post EXAKT nach diesem Muster:
 
-AUFGABE: Erstelle einen Social Media Post basierend auf dem Restaurant-Artikel.
+ZIEL-FORMAT (GENAU BEFOLGEN):
+**Restaurant Name Ort** **Titel - Hook mit Überraschung!**
+[3-4 Sätze Haupttext mit spezifischen Details, Zahlen, Namen]
+[1-2 Sätze über Besonderheiten, Terrasse, Ambiente]
+*Erlebe/Entdecke [spezifisches Konzept] mit deinem FINE TO DINE Gutschein!*
+#FINETODINE #Ort #RestaurantName #[2-3 spezifische Hashtags]
+**Veranstaltungstipp:** [Falls im Artikel erwähnt]
 
-STRUKTUR (GENAU BEFOLGEN):
-1. TITEL: Restaurant + Ort + überraschender Hook! (erste Zeile)
-2. HAUPTTEXT: 4-5 substantielle Sätze mit spezifischen Details
-3. CTA: "Erlebe [spezifisches Konzept] mit deinem FINE TO DINE Gutschein!"
-4. HASHTAGS: #FINETODINE #[Ort] #[besondere Merkmale]
-
-STIL-RICHTLINIEN:
-- Poetische, einladende Sprache wie in Luxus-Magazinen
-- Spezifische Details aus dem Artikel verwenden
-- Emotionale Verbindungen schaffen
-- Überraschende Kontraste hervorheben
-- KEINE Markdown-Formatierung verwenden!
+STIL-REGELN:
+- Verwende EXAKTE Details und Zahlen aus dem Artikel (Namen, Preise, Daten, etc.)
+- Erstelle überraschende Kontraste im Titel (z.B. "Tradition trifft Moderne", "Bodenständig mit Michelin-Stern")
+- Schreibe poetisch aber präzise
+- Verwende Schweizer Begriffe (z.B. "über Mittag" statt "mittags")
+- WICHTIG: Verwende KEIN Markdown (**bold**, *italic*) - nur normalen Text!
 
 BEISPIEL-STRUKTUR:
-Restaurant Truube Gais - Bodenständigkeit mit Michelin-Stern!
-Silvia Manser verzaubert mit grundehrlicher und weltoffener Küche. Erstklassige regionale Produkte, bedingungslose Frische - vom Amuse-Bouche bis zu hausgemachten Friandises. Die umliegende Appenzeller Natur inspiriert, aber auch Köstlichkeiten aus aller Welt fliessen mit Fingerspitzengefühl ein. Besonderes Erlebnis: der Gasttisch neben der Küche für Live-Einblicke!
-Erlebe weltoffene Bodenständigkeit auf Sterne-Niveau mit deinem FINE TO DINE Gutschein!
-#FINETODINE #Gais #MichelinStern #GaultMillau
-
-WICHTIG: 
-- Verwende NUR Fakten aus dem bereitgestellten Artikel
-- KEINE erfundenen Details oder Auszeichnungen
-- Verwende KEINE Markdown-Formatierung (**bold** oder *italic*)
-- Nur plain text!
+**Weiherschloss Bottmingen** **Eine Terrasse für alle - zweigeteilt und doch vereint!**
+Das Weiherschloss hat sich erfolgreich neu aufgestellt: Seit März 2024 ergänzt die Brasserie du Château das etablierte Gourmetrestaurant Louis perfekt. Gastgeber Peter Kapral empfängt über Mittag mit unkomplizierten Lunchtellern, während abends gemütliche Mehrgänger locken. Die salomonische Lösung für die Sommermonate: Die lauschige Terrasse über dem Burgweiher teilen sich beide Konzepte - 70 Plätze für die Brasserie, 20 für das Gourmet Louis.
+*Entdecke beide Konzepte unter einem Dach mit deinem FINE TO DINE Gutschein!*
+#FINETODINE #Bottmingen #Weiherschloss #ZweiKonzepte
+**Veranstaltungstipp:** 17. AUG 2025: Rock The Castle Vol. VI
 
 ARTIKEL: ${sanitizedText}
 
-Erstelle jetzt den Social Media Post:`;
+Erstelle den Post nach diesem EXAKTEN Format (kein Markdown):`;
 
         console.log('🤖 Calling Claude 3.5 Sonnet API...');
         const response = await callClaudeSonnetAPI(prompt);
