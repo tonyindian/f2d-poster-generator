@@ -143,7 +143,7 @@
 
     <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
     <script type="module">
-        // 🔒 FIXED Secure Protected App - Claude 3.5 Sonnet Compatible
+        // 🔒 FIXED Secure Protected App - Claude 3.7 Sonnet Compatible
         class SecureProtectedApp {
             #auth0Client = null;
             #user = null;
@@ -356,7 +356,8 @@
                     // Get fresh tokens
                     const authToken = await this.#auth0Client.getTokenSilently();
                     
-                    console.log('🤖 Step 1: Generating content with Claude 3.5 Sonnet...');
+                    // 🔄 UPDATED: Claude 3.7 Sonnet messaging
+                    console.log('🤖 Step 1: Generating content with Claude 3.7 Sonnet...');
                     const generateResponse = await fetch('/.netlify/functions/generate', {
                         method: 'POST',
                         headers: {
@@ -393,7 +394,8 @@
                         return;
                     }
 
-                    console.log('✅ Step 1 completed - Claude 3.5 Sonnet success!');
+                    // 🔄 UPDATED: Claude 3.7 Sonnet success message
+                    console.log('✅ Step 1 completed - Claude 3.7 Sonnet success!');
 
                     // 🎨 STEP 2: FORMAT CONTENT
                     console.log('🎨 Step 2: Formatting content...');

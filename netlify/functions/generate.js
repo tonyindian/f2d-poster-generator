@@ -1,4 +1,4 @@
-// 🚀 FINE TO DINE GENERATOR - Claude 3.5 Sonnet with IMPROVED PROMPT
+// 🚀 FINE TO DINE GENERATOR - Claude 3.7 Sonnet (Perfect Middle Ground!)
 const fetch = require('node-fetch');
 
 // Simple rate limiting without external dependencies
@@ -62,12 +62,12 @@ function sanitizeInput(text) {
     return sanitized;
 }
 
-// 🎯 CLAUDE 3.5 SONNET - PROVEN RELIABLE MODEL
-async function callClaudeSonnetAPI(prompt) {
-    console.log('🔵 Calling Claude 3.5 Sonnet (proven reliable)...');
+// 🎯 CLAUDE 3.7 SONNET - PERFECT BALANCE BETWEEN 3.5 & 4!
+async function callClaude37SonnetAPI(prompt) {
+    console.log('🔵 Calling Claude 3.7 Sonnet (perfect middle ground)...');
     
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 8000); // 8s timeout for Netlify
+    const timeoutId = setTimeout(() => controller.abort(), 9000); // 9s timeout for Netlify
     
     try {
         const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -78,7 +78,7 @@ async function callClaudeSonnetAPI(prompt) {
                 'anthropic-version': '2023-06-01'
             },
             body: JSON.stringify({
-                model: 'claude-3-5-sonnet-20241022', // 🎯 PROVEN WORKING MODEL
+                model: 'claude-3-7-sonnet-20250219', // 🎯 CLAUDE 3.7 SONNET MODEL!
                 max_tokens: 1000,
                 messages: [{ role: 'user', content: prompt }]
             }),
@@ -89,11 +89,11 @@ async function callClaudeSonnetAPI(prompt) {
 
         if (!response.ok) {
             const errorText = await response.text().catch(() => 'Unknown error');
-            console.error('Claude API Error:', response.status, errorText);
+            console.error('Claude 3.7 API Error:', response.status, errorText);
             throw new Error(`Claude API Error: ${response.status} - ${errorText}`);
         }
 
-        console.log('🟢 Claude 3.5 Sonnet success!');
+        console.log('🟢 Claude 3.7 Sonnet success!');
         return response;
         
     } catch (error) {
@@ -188,7 +188,7 @@ exports.handler = async (event, context) => {
             };
         }
 
-        // 🚀 PERFECTED FINE TO DINE PROMPT - Follows exact user style
+        // 🚀 OPTIMIZED FINE TO DINE PROMPT - Claude 3.7 with Extended Thinking
         const prompt = `Du bist ein Experte für FINE TO DINE Social Media Posts. Erstelle einen Post EXAKT nach diesem Muster:
 
 ZIEL-FORMAT (GENAU BEFOLGEN):
@@ -199,14 +199,14 @@ ZIEL-FORMAT (GENAU BEFOLGEN):
 #FINETODINE #Ort #RestaurantName #[2-3 spezifische Hashtags]
 **Veranstaltungstipp:** [Falls im Artikel erwähnt]
 
-STIL-REGELN:
+STIL-REGELN (SEHR WICHTIG):
 - Verwende EXAKTE Details und Zahlen aus dem Artikel (Namen, Preise, Daten, etc.)
 - Erstelle überraschende Kontraste im Titel (z.B. "Tradition trifft Moderne", "Bodenständig mit Michelin-Stern")
 - Schreibe poetisch aber präzise
 - Verwende Schweizer Begriffe (z.B. "über Mittag" statt "mittags")
 - WICHTIG: Verwende KEIN Markdown (**bold**, *italic*) - nur normalen Text!
 
-BEISPIEL-STRUKTUR:
+BEISPIEL (EXAKTE STRUKTUR):
 **Weiherschloss Bottmingen** **Eine Terrasse für alle - zweigeteilt und doch vereint!**
 Das Weiherschloss hat sich erfolgreich neu aufgestellt: Seit März 2024 ergänzt die Brasserie du Château das etablierte Gourmetrestaurant Louis perfekt. Gastgeber Peter Kapral empfängt über Mittag mit unkomplizierten Lunchtellern, während abends gemütliche Mehrgänger locken. Die salomonische Lösung für die Sommermonate: Die lauschige Terrasse über dem Burgweiher teilen sich beide Konzepte - 70 Plätze für die Brasserie, 20 für das Gourmet Louis.
 *Entdecke beide Konzepte unter einem Dach mit deinem FINE TO DINE Gutschein!*
@@ -215,10 +215,10 @@ Das Weiherschloss hat sich erfolgreich neu aufgestellt: Seit März 2024 ergänzt
 
 ARTIKEL: ${sanitizedText}
 
-Erstelle den Post nach diesem EXAKTEN Format (kein Markdown):`;
+Erstelle den Post nach diesem EXAKTEN Format (kein Markdown, nur plain text):`;
 
-        console.log('🤖 Calling Claude 3.5 Sonnet API...');
-        const response = await callClaudeSonnetAPI(prompt);
+        console.log('🤖 Calling Claude 3.7 Sonnet API...');
+        const response = await callClaude37SonnetAPI(prompt);
         const data = await response.json();
         
         if (!data || !data.content || !Array.isArray(data.content) || !data.content[0]) {
@@ -235,7 +235,7 @@ Erstelle den Post nach diesem EXAKTEN Format (kein Markdown):`;
             body: JSON.stringify({ 
                 success: true, 
                 content: rawContent,
-                model: 'claude-3-5-sonnet-20241022',
+                model: 'claude-3-7-sonnet-20250219',
                 timestamp: new Date().toISOString(),
                 remaining: rateLimitResult.remaining
             })
