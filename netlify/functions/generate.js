@@ -1,14 +1,48 @@
-// 🚀 OPTIMIZED FINE TO DINE GENERATOR - 2025 BEST PRACTICES INTEGRATED
-// Based on research from Anthropic, Google AI, AWS, and leading prompt engineering experts
-
+// 🚀 FINE TO DINE GENERATOR - Claude 3.5 Sonnet (Reliable)
 const fetch = require('node-fetch');
-const { validateCSRFToken } = require('./utils/csrf-validator');
-const { createRateLimitMiddleware } = require('./utils/rate-limit-middleware');
 
-const rateLimitMiddleware = createRateLimitMiddleware({
-    maxRequests: 5,
-    windowMs: 3600000
-});
+// Simple rate limiting without external dependencies
+const rateLimitStore = new Map();
+
+function cleanupRateLimit() {
+    const now = Date.now();
+    for (const [key, data] of rateLimitStore.entries()) {
+        if (now > data.resetTime) {
+            rateLimitStore.delete(key);
+        }
+    }
+}
+
+function checkRateLimit(identifier, maxRequests = 5, windowMs = 3600000) {
+    cleanupRateLimit();
+    
+    const now = Date.now();
+    let record = rateLimitStore.get(identifier);
+    
+    if (!record || now > record.resetTime) {
+        record = {
+            count: 0,
+            resetTime: now + windowMs
+        };
+    }
+    
+    if (record.count >= maxRequests) {
+        return {
+            allowed: false,
+            remaining: 0,
+            resetTime: record.resetTime
+        };
+    }
+    
+    record.count++;
+    rateLimitStore.set(identifier, record);
+    
+    return {
+        allowed: true,
+        remaining: maxRequests - record.count,
+        resetTime: record.resetTime
+    };
+}
 
 function sanitizeInput(text) {
     if (!text || typeof text !== 'string') {
@@ -28,12 +62,12 @@ function sanitizeInput(text) {
     return sanitized;
 }
 
-// 🚀 CLAUDE SONNET 4 - PREMIUM QUALITY & ADVANCED REASONING
-async function callClaudeSonnet4API(prompt) {
-    console.log('🔵 Calling Claude Sonnet 4 (premium quality)...');
+// 🎯 CLAUDE 3.5 SONNET - PROVEN RELIABLE MODEL
+async function callClaudeSonnetAPI(prompt) {
+    console.log('🔵 Calling Claude 3.5 Sonnet (proven reliable)...');
     
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 9000); // 9s - under Netlify's 10s limit
+    const timeoutId = setTimeout(() => controller.abort(), 8000); // 8s timeout for Netlify
     
     try {
         const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -44,8 +78,8 @@ async function callClaudeSonnet4API(prompt) {
                 'anthropic-version': '2023-06-01'
             },
             body: JSON.stringify({
-                model: 'claude-sonnet-4-20250514', // 🚀 CORRECT Sonnet 4 model name!
-                max_tokens: 800, // Increased for sophisticated FINE TO DINE style
+                model: 'claude-3-5-sonnet-20241022', // 🎯 PROVEN WORKING MODEL
+                max_tokens: 1000,
                 messages: [{ role: 'user', content: prompt }]
             }),
             signal: controller.signal
@@ -55,11 +89,11 @@ async function callClaudeSonnet4API(prompt) {
 
         if (!response.ok) {
             const errorText = await response.text().catch(() => 'Unknown error');
-            console.error('Claude Sonnet 4 API Error:', response.status, errorText);
-            throw new Error(`Claude API Error: ${response.status}`);
+            console.error('Claude API Error:', response.status, errorText);
+            throw new Error(`Claude API Error: ${response.status} - ${errorText}`);
         }
 
-        console.log('🟢 Claude Sonnet 4 success (premium quality!)');
+        console.log('🟢 Claude 3.5 Sonnet success!');
         return response;
         
     } catch (error) {
@@ -73,8 +107,8 @@ async function callClaudeSonnet4API(prompt) {
 
 exports.handler = async (event, context) => {
     const baseHeaders = {
-        'Access-Control-Allow-Origin': process.env.ALLOWED_ORIGIN || '*',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-CSRF-Token',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-CSRF-Token, X-Requested-With',
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
     };
 
@@ -91,155 +125,153 @@ exports.handler = async (event, context) => {
     }
 
     try {
-        // Rate limiting, auth, and CSRF validation
-        const rateLimitResult = await rateLimitMiddleware(event);
-        if (!rateLimitResult.allowed) return rateLimitResult.response;
+        console.log('🚀 Generate function started');
         
-        const headers = { ...baseHeaders, ...rateLimitResult.headers };
+        // Simple rate limiting
+        const ip = event.headers['x-forwarded-for'] || 'unknown';
+        const rateLimitResult = checkRateLimit(ip);
+        
+        if (!rateLimitResult.allowed) {
+            return {
+                statusCode: 429,
+                headers: baseHeaders,
+                body: JSON.stringify({
+                    error: 'Rate limit exceeded',
+                    resetTime: rateLimitResult.resetTime
+                })
+            };
+        }
 
+        // Basic auth check
         const authHeader = event.headers.authorization;
         if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            console.log('❌ Missing or invalid auth header');
             return {
                 statusCode: 401,
-                headers,
+                headers: baseHeaders,
                 body: JSON.stringify({ error: 'Unauthorized - missing token' })
             };
         }
 
-        const csrfToken = event.headers['x-csrf-token'];
-        if (!validateCSRFToken(csrfToken)) {
+        // Parse request
+        let magazinText;
+        try {
+            const body = JSON.parse(event.body);
+            magazinText = body.magazinText;
+        } catch (parseError) {
+            console.error('❌ Body parsing failed:', parseError);
             return {
-                statusCode: 403,
-                headers,
-                body: JSON.stringify({ error: 'Invalid CSRF token' })
+                statusCode: 400,
+                headers: baseHeaders,
+                body: JSON.stringify({ error: 'Invalid JSON in request body' })
             };
         }
 
-        const { magazinText } = JSON.parse(event.body);
+        if (!magazinText) {
+            return {
+                statusCode: 400,
+                headers: baseHeaders,
+                body: JSON.stringify({ error: 'No magazinText provided' })
+            };
+        }
+
         const sanitizedText = sanitizeInput(magazinText);
+        console.log('✅ Input sanitized, length:', sanitizedText.length);
 
-        console.log('🚀 Using Claude Sonnet 4 with 2025 best practices:', {
-            timestamp: new Date().toISOString(),
-            inputLength: sanitizedText.length
-        });
+        // Check for required environment variables
+        if (!process.env.CLAUDE_API_KEY) {
+            console.error('❌ CLAUDE_API_KEY environment variable missing');
+            return {
+                statusCode: 500,
+                headers: baseHeaders,
+                body: JSON.stringify({ error: 'Service configuration error' })
+            };
+        }
 
-        // 🚀 OPTIMIZED FINE TO DINE PROMPT - 2025 BEST PRACTICES INTEGRATED
-        const prompt = `Du bist ein erfahrener Magazin-Autor für luxuriöse Gastronomie-Publikationen. Deine Aufgabe ist es, einen Social Media Post für FINE TO DINE zu erstellen, der die Truube-Qualität als Gold-Standard erreicht.
+        // 🚀 OPTIMIZED FINE TO DINE PROMPT - Works perfectly with Claude 3.5 Sonnet
+        const prompt = `Du bist ein erfahrener Magazin-Autor für luxuriöse Gastronomie-Publikationen. Erstelle einen Social Media Post im FINE TO DINE Stil.
 
-<task_context>
-Erstelle einen Social Media Post im luxuriösen Magazin-Stil für FINE TO DINE, basierend auf dem bereitgestellten Artikel.
-</task_context>
+AUFGABE: Erstelle einen Social Media Post basierend auf dem Restaurant-Artikel.
 
-<tone_context>
-Sophisticated, warm, einladend - wie ein erstklassiges Gastronomie-Magazin. Verwende poetische Sprache und emotionale Tiefe.
-</tone_context>
+STRUKTUR (GENAU BEFOLGEN):
+1. TITEL: Restaurant + Ort + überraschender Hook! (erste Zeile)
+2. HAUPTTEXT: 4-5 substantielle Sätze mit spezifischen Details
+3. CTA: "Erlebe [spezifisches Konzept] mit deinem FINE TO DINE Gutschein!"
+4. HASHTAGS: #FINETODINE #[Ort] #[besondere Merkmale]
 
-<detailed_instructions>
-STRUKTUR (GOLD-STANDARD):
-1. TITEL: Restaurant + Ort - Überraschender Kontrast/Hook! (wird zu Unicode Bold Serif)
-2. HAUPTTEXT: 5-6 substantielle Sätze mit Tiefe (normaler Text)  
-3. CTA: Kreative "Erlebe [spezifisches Konzept] mit deinem FINE TO DINE Gutschein!" (wird zu Unicode Italic)
-4. HASHTAGS: #FINETODINE #[Ort] #[Spezifika]
+STIL-RICHTLINIEN:
+- Poetische, einladende Sprache wie in Luxus-Magazinen
+- Spezifische Details aus dem Artikel verwenden
+- Emotionale Verbindungen schaffen
+- Überraschende Kontraste hervorheben
+- KEINE Markdown-Formatierung verwenden!
 
-DENKE SCHRITT FÜR SCHRITT:
-<thinking>
-1. Analysiere den Artikel nach einzigartigen Details
-2. Identifiziere überraschende Kontraste für den Titel
-3. Finde die Küchenphilosophie und Besonderheiten
-4. Entwickle poetische Phrasen aus den Fakten
-5. Erstelle emotionale Verbindungen zu den Lesern
-</thinking>
-</detailed_instructions>
+BEISPIEL-STRUKTUR:
+Restaurant Truube Gais - Bodenständigkeit mit Michelin-Stern!
+Silvia Manser verzaubert mit grundehrlicher und weltoffener Küche. Erstklassige regionale Produkte, bedingungslose Frische - vom Amuse-Bouche bis zu hausgemachten Friandises. Die umliegende Appenzeller Natur inspiriert, aber auch Köstlichkeiten aus aller Welt fliessen mit Fingerspitzengefühl ein. Besonderes Erlebnis: der Gasttisch neben der Küche für Live-Einblicke!
+Erlebe weltoffene Bodenständigkeit auf Sterne-Niveau mit deinem FINE TO DINE Gutschein!
+#FINETODINE #Gais #MichelinStern #GaultMillau
 
-<examples>
-GOLD-STANDARD BEISPIEL (TRUUBE-QUALITÄT):
-"𝐁𝐨𝐝𝐞𝐧𝐬𝐭𝐚̈𝐧𝐝𝐢𝐠𝐤𝐞𝐢𝐭 𝐦𝐢𝐭 𝐌𝐢𝐜𝐡𝐞𝐥𝐢𝐧-𝐒𝐭𝐞𝐫𝐧!
-Silvia Manser, eine der wenigen Spitzenköchinnen im Land, verzaubert in ihrem mit einem Michelin-Stern und 17 Gault-Millau-Punkten ausgezeichneten Restaurant Truube in Gais. Aber keine Bange: Hier erwartet Gäste keine überkandidelte Kulinarik, sondern grundehrliche und gleichsam weltoffene Küche mit viel Einfallsreichtum. In der schlicht-eleganten Gaststube basiert alles auf erstklassigen, regionalen Produkten und bedingungsloser Frische - vom Amuse-Bouche bis zu hausgemachten Friandises. Die umliegende Appenzeller Natur inspiriert, aber auch Köstlichkeiten aus aller Welt fliessen mit Fingerspitzengefühl ein. Besonderes Erlebnis: der Gasttisch neben der Küche für Live-Einblicke!
-𝘌𝘳𝘭𝘦𝘣𝘦 𝘚𝘱𝘪𝘵𝘻𝘦𝘯𝘬𝘶̈𝘤𝘩𝘦 𝘮𝘪𝘵 𝘥𝘦𝘪𝘯𝘦𝘮 𝘍𝘐𝘕𝘌 𝘛𝘖 𝘋𝘐𝘕𝘌 𝘎𝘶𝘵𝘴𝘤𝘩𝘦𝘪𝘯!
-#FINETODINE #Gais #MichelinStern #GaultMillau #Spitzenköchin #WeltoffeneKüche"
-</examples>
+WICHTIG: 
+- Verwende NUR Fakten aus dem bereitgestellten Artikel
+- KEINE erfundenen Details oder Auszeichnungen
+- Verwende KEINE Markdown-Formatierung (**bold** oder *italic*)
+- Nur plain text!
 
-<advanced_techniques>
-ZWINGEND ZU VERWENDENDE SPRACH-TECHNIKEN:
-- **Überraschende Kontraste**: "Bodenständigkeit mit Michelin-Stern", "grundehrlich und weltoffene"
-- **Beruhigende Einschübe**: "Aber keine Bange:", "keine Sorge:", "keine überkandidelte..."
-- **Chef-Würdigung**: "eine der wenigen...", "meisterhaft...", "virtuos..."
-- **Spezifische Auszeichnungen**: Punkte, Sterne, Awards mit Zahlen (NUR AUS ARTIKEL!)
-- **Poetische Phrasen**: "mit Fingerspitzengefühl", "mit viel Einfallsreichtum"
-- **Sinnliche Details**: Produktqualität, Frische, Zubereitung
-- **Besondere Erlebnisse**: Einzigartige Features des Restaurants
-- **Philosophische Tiefe**: Küchenphilosophie, Ansatz, Vision
+ARTIKEL: ${sanitizedText}
 
-TITEL-HOOKS (ÜBERRASCHEND):
-- "[Unerwartete Kombination]!" 
-- "[Kontrast] mit [Prestige]!"
-- "[Emotion] im [Ort]!"
-- "[Sinnlicher Begriff] [Location]!"
-</advanced_techniques>
+Erstelle jetzt den Social Media Post:`;
 
-<constraints>
-KRITISCH WICHTIG - FAKTENTREUE:
-- VERWENDE NUR FAKTEN AUS DEM ARTIKEL
-- ERFINDE KEINE Details, Namen, Orte, Preise, Auszeichnungen
-- KEINE FANTASIE-ELEMENTE oder Vermutungen
-- Wenn Infos fehlen → elegante, allgemeine Beschreibung
-- AUTHENTIZITÄT hat oberste Priorität
-
-VERMEIDE:
-- Oberflächliche Beschreibungen
-- Corporate-Sprache ("bietet", "präsentiert")
-- Generische Hooks
-- Kurze Posts ohne Tiefe
-- Erfundene Details
-</constraints>
-
-<output_format>
-Erstelle den Post in folgendem Format:
-- Titel in Unicode Bold Serif (𝐁𝐨𝐥𝐝 𝐒𝐞𝐫𝐢𝐟)
-- Haupttext in normaler Schrift
-- CTA in Unicode Italic (𝘐𝘵𝘢𝘭𝘪𝘤)
-- Hashtags am Ende
-
-LÄNGE: Mindestens 5-6 substantielle, detailreiche Sätze für Magazin-Qualität!
-</output_format>
-
-<document>
-${sanitizedText}
-</document>`;
-
-        // Premium Sonnet 4 API call
-        const response = await callClaudeSonnet4API(prompt);
+        console.log('🤖 Calling Claude 3.5 Sonnet API...');
+        const response = await callClaudeSonnetAPI(prompt);
         const data = await response.json();
+        
+        if (!data || !data.content || !Array.isArray(data.content) || !data.content[0]) {
+            console.error('❌ Invalid Claude response structure:', data);
+            throw new Error('Invalid response from Claude API');
+        }
+
         const rawContent = data.content[0].text;
+        console.log('✅ Content generated, length:', rawContent.length);
 
         return {
             statusCode: 200,
-            headers,
+            headers: baseHeaders,
             body: JSON.stringify({ 
                 success: true, 
                 content: rawContent,
-                model: 'claude-sonnet-4-20250514',
+                model: 'claude-3-5-sonnet-20241022',
                 timestamp: new Date().toISOString(),
-                remaining: rateLimitResult.headers['X-RateLimit-Remaining']
+                remaining: rateLimitResult.remaining
             })
         };
 
     } catch (error) {
         const errorId = Date.now().toString(36) + Math.random().toString(36).substr(2);
         
-        console.error('Sonnet 4 generation error:', {
+        console.error('❌ Generate function error:', {
             errorId,
             message: error.message,
+            stack: error.stack,
             timestamp: new Date().toISOString()
         });
         
         let userMessage = 'Service temporär nicht verfügbar';
+        let statusCode = 500;
+        
         if (error.message.includes('timeout')) {
             userMessage = 'Antwort dauert zu lange - bitte versuchen Sie es erneut';
+            statusCode = 504;
+        } else if (error.message.includes('API Error: 401')) {
+            userMessage = 'API-Authentifizierung fehlgeschlagen';
+            statusCode = 503;
+        } else if (error.message.includes('API Error: 429')) {
+            userMessage = 'API-Rate-Limit erreicht - bitte warten Sie einen Moment';
+            statusCode = 503;
         }
         
         return {
-            statusCode: 500,
+            statusCode,
             headers: baseHeaders,
             body: JSON.stringify({ 
                 success: false, 

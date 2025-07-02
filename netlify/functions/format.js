@@ -47,7 +47,7 @@ function applyFineToDineFormatting(text) {
     formatted = formatted.replace(/\*\*(.*?)\*\*/g, '$1'); // **text** → text
     formatted = formatted.replace(/\*(.*?)\*/g, '$1');     // *text* → text
     
-    // SCHRITT 1: TITEL-FORMATIERUNG (erste Zeile als Bold Serif)
+    // SCHRITT 1: TITEL-FORMATIERUNG (erste Zeile als Bold)
     const lines = formatted.split('\n');
     if (lines.length > 0) {
         const firstLine = lines[0].trim();
@@ -74,15 +74,7 @@ function applyFineToDineFormatting(text) {
         return line;
     });
     
-    // SCHRITT 3: VERANSTALTUNGSTIPP-FORMATIERUNG (Bold Sans-Serif)
-    const finalLines = processedLines.map(line => {
-        if (line.toLowerCase().includes('veranstaltungstipp')) {
-            return toBold(line);
-        }
-        return line;
-    });
-    
-    return finalLines.join('\n');
+    return processedLines.join('\n');
 }
 
 // INPUT VALIDATION für Formatting
@@ -111,7 +103,7 @@ function validateFormatInput(text) {
 // 🚀 MAIN HANDLER - ULTRA FAST FORMATTING ONLY
 exports.handler = async (event, context) => {
     const headers = {
-        'Access-Control-Allow-Origin': process.env.ALLOWED_ORIGIN || '*',
+        'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Headers': 'Content-Type',
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
     };

@@ -4,23 +4,25 @@
 [functions]
   node_bundler = "esbuild"
 
-# Netlify Functions Timeout Limits (Accurate as of 2025):
-# - Free Plan: 10 seconds (default)
-# - Pro Plan: 26 seconds (max, on request)
-# - Enterprise: Custom timeouts available
-
+# Optimized timeouts for Claude 3.5 Sonnet
 [functions.generate]
-  timeout = 10  # Max for free plan - Sonnet 4 must complete in <9s
+  timeout = 10  # Claude 3.5 Sonnet is faster than Claude 4
 
 [functions.format]
   timeout = 5   # Fast Unicode formatting only
+
+[functions.auth-config]
+  timeout = 5   # Simple config retrieval
+
+[functions.csrf-token]
+  timeout = 5   # Simple token generation
 
 [[headers]]
   for = "/.netlify/functions/*"
   [headers.values]
     Access-Control-Allow-Origin = "*"
-    Access-Control-Allow-Headers = "Content-Type, Authorization, X-CSRF-Token"
-    Access-Control-Allow-Methods = "POST, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type, Authorization, X-CSRF-Token, X-Requested-With"
+    Access-Control-Allow-Methods = "POST, GET, OPTIONS"
     
 # Redirects für Auth0 Login/App Trennung
 [[redirects]]

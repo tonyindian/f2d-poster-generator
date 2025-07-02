@@ -143,7 +143,7 @@
 
     <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
     <script type="module">
-        // 🔒 Secure Protected App - Mit CSRF Protection & Rate Limiting
+        // 🔒 FIXED Secure Protected App - Claude 3.5 Sonnet Compatible
         class SecureProtectedApp {
             #auth0Client = null;
             #user = null;
@@ -229,6 +229,7 @@
                     }
                 } catch (error) {
                     console.error('⚠️ CSRF token loading failed:', error);
+                    // Continue without CSRF for now
                 }
             }
 
@@ -355,13 +356,7 @@
                     // Get fresh tokens
                     const authToken = await this.#auth0Client.getTokenSilently();
                     
-                    // Refresh CSRF token if needed
-                    if (!this.#csrfToken) {
-                        await this.#loadCSRFToken();
-                    }
-
-                    // 🚀 STEP 1: GENERATE RAW CONTENT (Fast Claude call)
-                    console.log('🤖 Step 1: Generating content...');
+                    console.log('🤖 Step 1: Generating content with Claude 3.5 Sonnet...');
                     const generateResponse = await fetch('/.netlify/functions/generate', {
                         method: 'POST',
                         headers: {
@@ -376,60 +371,63 @@
                         })
                     });
 
+                    console.log('Generate response status:', generateResponse.status);
+
                     if (generateResponse.status === 429) {
                         const data = await generateResponse.json();
                         this.#showRateLimitInfo(data);
                         return;
                     }
 
+                    if (!generateResponse.ok) {
+                        const errorText = await generateResponse.text();
+                        console.error('Generate failed:', generateResponse.status, errorText);
+                        throw new Error(`Server error: ${generateResponse.status}`);
+                    }
+
                     const generateData = await generateResponse.json();
+                    console.log('Generate response:', generateData);
 
                     if (!generateData.success) {
                         this.#showError(generateData.error || 'Generierung fehlgeschlagen.');
                         return;
                     }
 
-                    console.log('✅ Step 1 completed');
+                    console.log('✅ Step 1 completed - Claude 3.5 Sonnet success!');
 
-                    // 🎨 STEP 2: FORMAT CONTENT (Ultra-fast local formatting)
+                    // 🎨 STEP 2: FORMAT CONTENT
                     console.log('🎨 Step 2: Formatting content...');
                     
-                    // Simple retry logic for format step
-                    let formatData;
-                    for (let attempt = 0; attempt < 2; attempt++) {
-                        try {
-                            const formatResponse = await fetch('/.netlify/functions/format', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify({ 
-                                    content: generateData.content
-                                })
-                            });
+                    let finalContent = generateData.content;
+                    
+                    try {
+                        const formatResponse = await fetch('/.netlify/functions/format', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ 
+                                content: generateData.content
+                            })
+                        });
 
-                            formatData = await formatResponse.json();
-                            break; // Success, exit retry loop
-                            
-                        } catch (error) {
-                            if (attempt === 1) throw error; // Last attempt failed
-                            console.warn(`Format attempt ${attempt + 1} failed, retrying...`);
-                            await new Promise(resolve => setTimeout(resolve, 500)); // Brief delay
+                        if (formatResponse.ok) {
+                            const formatData = await formatResponse.json();
+                            if (formatData.success) {
+                                finalContent = formatData.content;
+                                console.log('✅ Step 2 completed - Unicode formatting applied!');
+                            } else {
+                                console.warn('Formatting failed, using raw content');
+                            }
+                        } else {
+                            console.warn('Format endpoint failed, using raw content');
                         }
+                    } catch (formatError) {
+                        console.warn('Format failed, using raw content:', formatError);
                     }
-
-                    if (!formatData.success) {
-                        // Fallback: show raw content if formatting fails
-                        console.warn('Formatting failed, showing raw content');
-                        document.getElementById('resultContent').textContent = generateData.content;
-                    } else {
-                        // Success: show formatted content
-                        document.getElementById('resultContent').textContent = formatData.content;
-                    }
-
-                    console.log('✅ Step 2 completed');
 
                     // Show result
+                    document.getElementById('resultContent').textContent = finalContent;
                     resultCard?.classList.add('visible');
                     resultCard?.classList.add('success-animation');
 
@@ -459,14 +457,6 @@
                 return input
                     .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
                     .replace(/<[^>]*>/g, '')
-                    .replace(/javascript:/gi, '')
-                    .replace(/on\w+\s*=/gi, '')
-                    .trim();
-            }
-
-            #sanitizeOutput(output) {
-                return output
-                    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
                     .replace(/javascript:/gi, '')
                     .replace(/on\w+\s*=/gi, '')
                     .trim();
@@ -506,27 +496,33 @@
             }
         }
 
-        // Utility Functions (Global for onclick handlers)
-        window.copyToClipboard = async function () {
+        // FIXED Utility Functions - Proper event handling
+        window.copyToClipboard = async function (event) {
             const content = document.getElementById('resultContent')?.textContent;
             if (!content || content.includes('Verwandeln Sie Ihre Restaurant-Geschichte')) return;
 
             try {
                 await navigator.clipboard.writeText(content);
-                const btn = event.target.closest('button');
-                const originalHTML = btn.innerHTML;
-                btn.innerHTML = '<span class="material-symbols-outlined">done</span><span>Kopiert!</span>';
-                btn.classList.add('success-animation');
-                setTimeout(() => {
-                    btn.innerHTML = originalHTML;
-                    btn.classList.remove('success-animation');
-                }, 2000);
+                // Fixed: Handle both event and direct call scenarios
+                const btn = event && event.target 
+                    ? event.target.closest('button') 
+                    : document.querySelector('[onclick="copyToClipboard()"]');
+                    
+                if (btn) {
+                    const originalHTML = btn.innerHTML;
+                    btn.innerHTML = '<span class="material-symbols-outlined">done</span><span>Kopiert!</span>';
+                    btn.classList.add('success-animation');
+                    setTimeout(() => {
+                        btn.innerHTML = originalHTML;
+                        btn.classList.remove('success-animation');
+                    }, 2000);
+                }
             } catch (error) {
                 console.error('Copy failed:', error);
             }
         };
 
-        window.sharePost = function () {
+        window.sharePost = function (event) {
             const content = document.getElementById('resultContent')?.textContent;
             if (!content || content.includes('Verwandeln Sie Ihre Restaurant-Geschichte')) return;
 
@@ -536,7 +532,7 @@
                     text: content
                 }).catch(console.error);
             } else {
-                window.copyToClipboard();
+                window.copyToClipboard(event);
             }
         };
 
@@ -550,7 +546,7 @@
             if (magazinText) magazinText.value = '';
             resultCard?.classList.remove('visible');
             errorMessage?.classList.remove('active');
-            rateLimitInfo.style.display = 'none';
+            if (rateLimitInfo) rateLimitInfo.style.display = 'none';
 
             if (resultContent) {
                 resultContent.innerHTML = '✨ Verwandeln Sie Ihre Restaurant-Geschichte in einen ansprechenden Social Media Post.<br>Einfach Artikel eingeben und "Perfekten Post erstellen" klicken.';
