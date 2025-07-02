@@ -7,11 +7,14 @@
 [functions.generate]
   timeout = 30
 
+[functions.format]
+  timeout = 10
+
 [[headers]]
   for = "/.netlify/functions/*"
   [headers.values]
     Access-Control-Allow-Origin = "*"
-    Access-Control-Allow-Headers = "Content-Type"
+    Access-Control-Allow-Headers = "Content-Type, Authorization, X-CSRF-Token"
     Access-Control-Allow-Methods = "POST, OPTIONS"
     
 # Redirects für Auth0 Login/App Trennung

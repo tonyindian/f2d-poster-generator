@@ -4,93 +4,15 @@ const { createRateLimitMiddleware } = require('./utils/rate-limit-middleware');
 
 // Rate Limiter Configuration
 const rateLimitMiddleware = createRateLimitMiddleware({
-    maxRequests: 5,           // 5 requests per hour (Claude ist teuer!)
-    windowMs: 3600000,        // 1 Stunde
+    maxRequests: 5,
+    windowMs: 3600000,
     onLimitReached: (event, result) => {
-        // Additional logging/alerting bei Rate Limit
         console.error('RATE LIMIT ALERT:', {
             ip: event.headers['x-forwarded-for'],
-            timestamp: new Date().toISOString(),
-            resetTime: new Date(result.resetTime).toISOString()
+            timestamp: new Date().toISOString()
         });
     }
 });
-
-// Unicode Character Maps - VOLLSTÄNDIG
-const UNICODE_BOLD = {
-    'A': '𝐀', 'B': '𝐁', 'C': '𝐂', 'D': '𝐃', 'E': '𝐄', 'F': '𝐅', 'G': '𝐆', 'H': '𝐇', 'I': '𝐈', 'J': '𝐉',
-    'K': '𝐊', 'L': '𝐋', 'M': '𝐌', 'N': '𝐍', 'O': '𝐎', 'P': '𝐏', 'Q': '𝐐', 'R': '𝐑', 'S': '𝐒', 'T': '𝐓',
-    'U': '𝐔', 'V': '𝐕', 'W': '𝐖', 'X': '𝐗', 'Y': '𝐘', 'Z': '𝐙',
-    'a': '𝐚', 'b': '𝐛', 'c': '𝐜', 'd': '𝐝', 'e': '𝐞', 'f': '𝐟', 'g': '𝐠', 'h': '𝐡', 'i': '𝐢', 'j': '𝐣',
-    'k': '𝐤', 'l': '𝐥', 'm': '𝐦', 'n': '𝐧', 'o': '𝐨', 'p': '𝐩', 'q': '𝐪', 'r': '𝐫', 's': '𝐬', 't': '𝐭',
-    'u': '𝐮', 'v': '𝐯', 'w': '𝐰', 'x': '𝐱', 'y': '𝐲', 'z': '𝐳',
-    '0': '𝟎', '1': '𝟏', '2': '𝟐', '3': '𝟑', '4': '𝟒', '5': '𝟓', '6': '𝟔', '7': '𝟕', '8': '𝟖', '9': '𝟗',
-    'ä': '𝐚̈', 'ö': '𝐨̈', 'ü': '𝐮̈', 'Ä': '𝐀̈', 'Ö': '𝐎̈', 'Ü': '𝐔̈', 'ß': '𝐬𝐬',
-    '-': '-', ' ': ' ', '!': '!', '.': '.', ',': ',', ':': ':', ';': ';', '?': '?', 
-    '(': '(', ')': ')', '[': '[', ']': ']', '/': '/', '&': '&', '@': '@', '#': '#',
-    '€': '€', '%': '%', '+': '+', '=': '=', '*': '*', '"': '"', "'": "'", '`': '`'
-};
-
-const UNICODE_ITALIC = {
-    'A': '𝘈', 'B': '𝘉', 'C': '𝘊', 'D': '𝘋', 'E': '𝘌', 'F': '𝘍', 'G': '𝘎', 'H': '𝘏', 'I': '𝘐', 'J': '𝘑',
-    'K': '𝘒', 'L': '𝘓', 'M': '𝘔', 'N': '𝘕', 'O': '𝘖', 'P': '𝘗', 'Q': '𝘘', 'R': '𝘙', 'S': '𝘚', 'T': '𝘛',
-    'U': '𝘜', 'V': '𝘝', 'W': '𝘞', 'X': '𝘟', 'Y': '𝘠', 'Z': '𝘡',
-    'a': '𝘢', 'b': '𝘣', 'c': '𝘤', 'd': '𝘥', 'e': '𝘦', 'f': '𝘧', 'g': '𝘨', 'h': '𝘩', 'i': '𝘪', 'j': '𝘫',
-    'k': '𝘬', 'l': '𝘭', 'm': '𝘮', 'n': '𝘯', 'o': '𝘰', 'p': '𝘱', 'q': '𝘲', 'r': '𝘳', 's': '𝘴', 't': '𝘵',
-    'u': '𝘶', 'v': '𝘷', 'w': '𝘸', 'x': '𝘹', 'y': '𝘺', 'z': '𝘻',
-    '0': '𝟢', '1': '𝟣', '2': '𝟤', '3': '𝟥', '4': '𝟦', '5': '𝟧', '6': '𝟨', '7': '𝟩', '8': '𝟪', '9': '𝟫',
-    'ä': '𝘢̈', 'ö': '𝘰̈', 'ü': '𝘶̈', 'Ä': '𝘈̈', 'Ö': '𝘖̈', 'Ü': '𝘜̈', 'ß': '𝘴𝘴',
-    '-': '-', ' ': ' ', '!': '!', '.': '.', ',': ',', ':': ':', ';': ';', '?': '?',
-    '(': '(', ')': ')', '[': '[', ']': ']', '/': '/', '&': '&', '@': '@', '#': '#',
-    '€': '€', '%': '%', '+': '+', '=': '=', '*': '*', '"': '"', "'": "'", '`': '`'
-};
-
-// Unicode-Formatierungs-Funktionen
-function toBold(text) {
-    return text.split('').map(char => UNICODE_BOLD[char] || char).join('');
-}
-
-function toItalic(text) {
-    return text.split('').map(char => UNICODE_ITALIC[char] || char).join('');
-}
-
-// FINALE ROBUSTE FINE TO DINE Post Unicode-Formatierung
-function applyFineToDineFormatting(text) {
-    let formatted = text.trim();
-    
-    // SCHRITT 0: Markdown-Bereinigung (Claude generiert oft **bold** markdown)
-    formatted = formatted.replace(/\*\*(.*?)\*\*/g, '$1'); // **text** → text
-    formatted = formatted.replace(/\*(.*?)\*/g, '$1');     // *text* → text
-    
-    // SCHRITT 1: TITEL-FORMATIERUNG (erste Zeile als Bold)
-    const lines = formatted.split('\n');
-    if (lines.length > 0) {
-        const firstLine = lines[0].trim();
-        if (firstLine.length > 0) {
-            const boldTitle = toBold(firstLine);
-            // Erste Zeile exakt ersetzen
-            lines[0] = boldTitle;
-            formatted = lines.join('\n');
-        }
-    }
-    
-    // SCHRITT 2: CTA-FORMATIERUNG (Zeilen die "Erlebe" enthalten)
-    const processedLines = formatted.split('\n').map(line => {
-        // Suche nach Zeilen die "Erlebe" enthalten
-        if (line.includes('Erlebe')) {
-            // Finde "Erlebe" Position und formatiere von dort bis Zeilenende
-            const erlebeIndex = line.indexOf('Erlebe');
-            if (erlebeIndex !== -1) {
-                const beforeErlebe = line.substring(0, erlebeIndex);
-                const erlebeAndAfter = line.substring(erlebeIndex);
-                return beforeErlebe + toItalic(erlebeAndAfter);
-            }
-        }
-        return line;
-    });
-    
-    return processedLines.join('\n');
-}
 
 // 🔒 SICHERE INPUT VALIDATION
 function sanitizeInput(text) {
@@ -98,87 +20,70 @@ function sanitizeInput(text) {
         throw new Error('Invalid input type');
     }
     
-    // Length validation
-    if (text.length > 10000) {
-        throw new Error('Input too long');
-    }
+    if (text.length > 10000) throw new Error('Input too long');
+    if (text.length < 10) throw new Error('Input too short');
     
-    if (text.length < 10) {
-        throw new Error('Input too short');
-    }
-    
-    // Remove potentially dangerous patterns
     const sanitized = text
-        .replace(/[<>\"'&]/g, '') // XSS prevention
-        .replace(/\b(system|admin|root|exec|eval|script|SELECT|DROP|INSERT|UPDATE|DELETE)\b/gi, '') // Injection prevention
-        .replace(/\s+/g, ' ') // Normalize whitespace
+        .replace(/[<>\"'&]/g, '')
+        .replace(/\b(system|admin|root|exec|eval|script|SELECT|DROP|INSERT|UPDATE|DELETE)\b/gi, '')
+        .replace(/\s+/g, ' ')
         .trim();
     
-    if (!sanitized) {
-        throw new Error('Input contains only invalid characters');
-    }
-    
+    if (!sanitized) throw new Error('Input contains only invalid characters');
     return sanitized;
 }
 
-// 🤖 CLAUDE API CALL MIT PROFESSIONAL RETRY LOGIC
-async function callClaudeWithRetry(prompt, maxRetries = 3) {
-    for (let attempt = 0; attempt < maxRetries; attempt++) {
-        try {
-            console.log(`🔵 Claude API attempt ${attempt + 1}/${maxRetries}`);
-            
-            const response = await fetch('https://api.anthropic.com/v1/messages', {
-                method: 'POST',
-                headers: {
-                    'x-api-key': process.env.CLAUDE_API_KEY,
-                    'content-type': 'application/json',
-                    'anthropic-version': '2023-06-01',
-                    'Connection': 'keep-alive'  // ← NEU
-                },
-                body: JSON.stringify({
-                    model: 'claude-sonnet-4-20250514',
-                    max_tokens: 400,  // ← REDUZIERT von 600 auf 400
-                    messages: [{ role: 'user', content: prompt }]
-                }),
-                timeout: 4000,  // ← REDUZIERT von 6000 auf 4000
-                keepalive: true // ← NEU
-            });
+// 🚀 OPTIMIZED CLAUDE API CALL - No Retries, Fast Timeout
+async function callClaudeAPI(prompt) {
+    console.log('🔵 Calling Claude API...');
+    
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 7000); // 7s timeout (safer buffer)
+    
+    try {
+        const response = await fetch('https://api.anthropic.com/v1/messages', {
+            method: 'POST',
+            headers: {
+                'x-api-key': process.env.CLAUDE_API_KEY,
+                'content-type': 'application/json',
+                'anthropic-version': '2023-06-01'
+            },
+            body: JSON.stringify({
+                model: 'claude-sonnet-4-20250514',
+                max_tokens: 400, // Increased for complete posts
+                messages: [{ role: 'user', content: prompt }]
+            }),
+            signal: controller.signal
+        });
 
-            if (response.ok) {
-                console.log('🟢 Claude API success');
-                return response;
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            if (response.status === 429) {
+                throw new Error('Claude API rate limited');
+            } else if (response.status === 500) {
+                throw new Error('Claude API server error');
+            } else if (response.status === 503) {
+                throw new Error('Claude API temporarily unavailable');
             }
-
-            // Retry nur bei 529 (overloaded) und 5xx Server-Errors
-            if (response.status === 529 || response.status >= 500) {
-                if (attempt < maxRetries - 1) {
-                    // Exponential backoff: 2s, 4s, 8s mit Jitter
-                    const baseDelay = Math.pow(2, attempt + 1) * 1000;
-                    const jitter = Math.random() * 1000; // 0-1s jitter
-                    const delay = baseDelay + jitter;
-                    
-                    console.log(`🟡 Retrying in ${Math.round(delay/1000)}s (HTTP ${response.status})`);
-                    await new Promise(resolve => setTimeout(resolve, delay));
-                    continue;
-                }
-            }
-
-            throw new Error(`Claude API Error: ${response.status}`);
-            
-        } catch (error) {
-            if (attempt === maxRetries - 1) throw error;
-            
-            // Network timeout - auch retry
-            const delay = Math.pow(2, attempt + 1) * 1000 + Math.random() * 1000;
-            console.log(`🔴 Network error, retrying in ${Math.round(delay/1000)}s: ${error.message}`);
-            await new Promise(resolve => setTimeout(resolve, delay));
+            throw new Error(`Claude API Error: ${response.status} - ${errorText}`);
         }
+
+        console.log('🟢 Claude API success');
+        return response;
+        
+    } catch (error) {
+        clearTimeout(timeoutId);
+        if (error.name === 'AbortError') {
+            throw new Error('Claude API timeout');
+        }
+        throw error;
     }
 }
 
-// 🔒 MAIN HANDLER MIT VOLLSTÄNDIGER SECURITY
+// 🔒 MAIN HANDLER - STREAMLINED FOR SPEED
 exports.handler = async (event, context) => {
-    // Standard headers
     const baseHeaders = {
         'Access-Control-Allow-Origin': process.env.ALLOWED_ORIGIN || '*',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-CSRF-Token',
@@ -198,13 +103,12 @@ exports.handler = async (event, context) => {
     }
 
     try {
-        // 🚀 1. RATE LIMITING CHECK (FIRST!)
+        // 🚀 1. RATE LIMITING CHECK
         const rateLimitResult = await rateLimitMiddleware(event);
         if (!rateLimitResult.allowed) {
             return rateLimitResult.response;
         }
         
-        // Add rate limit headers to base headers
         const headers = { ...baseHeaders, ...rateLimitResult.headers };
 
         // 🔒 2. VALIDATE AUTHORIZATION
@@ -220,7 +124,6 @@ exports.handler = async (event, context) => {
         // 🔒 3. VALIDATE CSRF TOKEN  
         const csrfToken = event.headers['x-csrf-token'];
         if (!validateCSRFToken(csrfToken)) {
-            console.error('Invalid CSRF token:', csrfToken ? 'provided' : 'missing');
             return {
                 statusCode: 403,
                 headers,
@@ -236,71 +139,50 @@ exports.handler = async (event, context) => {
         console.log('Secure request processed:', {
             timestamp: new Date().toISOString(),
             ip: event.headers['x-forwarded-for'] || 'unknown',
-            userAgent: event.headers['user-agent'] || 'unknown',
             inputLength: sanitizedText.length,
             remainingRequests: rateLimitResult.headers['X-RateLimit-Remaining']
         });
 
-        // 🤖 6. CLAUDE API CALL
-        const prompt = `Erstelle einen Social Media Post für Facebook/Instagram im FINE TO DINE Stil:
+        // 🤖 6. CLAUDE API CALL - OPTIMIZED PROMPT
+        const prompt = `Erstelle einen Social Media Post für FINE TO DINE:
 
-DENKE IN DIESEN ELEMENTEN:
-1. TITEL: Restaurant Name + Ort + Kernaussage (erste Zeile)
-2. HAUPTTEXT: Personen/Geschichte, dann Besonderheiten, dann Details
-3. CALL-TO-ACTION: Beginnt mit "Erlebe" und erwähnt "FINE TO DINE Gutschein"
-4. VERANSTALTUNGSTIPPS: Falls relevant aus dem Artikel
-5. HASHTAGS: #FINETODINE + Ort + spezifische Merkmale
+STRUKTUR (erste Zeile = Titel, dann Haupttext, dann Call-to-Action mit "Erlebe", dann Hashtags):
 
-STIL-REGELN:
-- Sprache: Emotionale Adjektive, konkrete Details
-- Struktur: Personen/Geschichte, dann Besonderheiten, dann Details
-- Call-to-Action muss mit "Erlebe" beginnen
-- WICHTIG: Verwende KEIN Markdown (**bold** oder *italic*) - nur normalen Text!
+Restaurant Name + Ort - Kernaussage!
+Haupttext mit Person/Geschichte und Besonderheiten.
 
-BEISPIEL-STRUKTUR:
-Restaurant Truube Gais - Bodenständigkeit mit Michelin-Stern!
-Silvia Manser verzaubert mit grundehrlicher und weltoffener Küche. Erstklassige regionale Produkte, bedingungslose Frische - vom Amuse-Bouche bis zu hausgemachten Friandises.
+Erlebe [Beschreibung] mit deinem FINE TO DINE Gutschein!
 
-Erlebe weltoffene Bodenständigkeit auf Sterne-Niveau mit deinem FINE TO DINE Gutschein!
+#FINETODINE #[Ort] #[Merkmal]
 
-#FINETODINE #Gais #MichelinStern #GaultMillau
+WICHTIG: Nur plain text, kein Markdown!
 
-ARTIKEL: ${sanitizedText}
+ARTIKEL: ${sanitizedText}`;
 
-Erstelle den Post mit dieser exakten Struktur (nur plain text, kein Markdown):`;
-
-        // Call Claude API with retry logic
-        const response = await callClaudeWithRetry(prompt);
-        console.log('🔵 Claude API finished');
-
+        // Single API call - no retries for speed
+        const response = await callClaudeAPI(prompt);
         const data = await response.json();
-        console.log('🔵 JSON parsed');
         const rawContent = data.content[0].text;
-        console.log('🔵 Content extracted');
 
-        // 🎨 7. APPLY UNICODE FORMATTING
-        const formattedContent = applyFineToDineFormatting(rawContent);
-        console.log('🔵 Formatting finished');
-        
+        // 📤 7. RETURN RAW CONTENT (formatting happens client-side or separate function)
         return {
             statusCode: 200,
             headers,
             body: JSON.stringify({ 
                 success: true, 
-                content: formattedContent,
+                content: rawContent, // Raw content from Claude
+                needsFormatting: true, // Flag for client
                 timestamp: new Date().toISOString(),
                 remaining: rateLimitResult.headers['X-RateLimit-Remaining']
             })
         };
 
     } catch (error) {
-        // 🔒 SECURE ERROR HANDLING
         const errorId = Date.now().toString(36) + Math.random().toString(36).substr(2);
         
-        console.error('Secure function error:', {
+        console.error('Generate function error:', {
             errorId,
             message: error.message,
-            stack: error.stack,
             timestamp: new Date().toISOString(),
             ip: event.headers['x-forwarded-for'] || 'unknown'
         });
@@ -310,8 +192,8 @@ Erstelle den Post mit dieser exakten Struktur (nur plain text, kein Markdown):`;
             headers: baseHeaders,
             body: JSON.stringify({ 
                 success: false, 
-                error: 'Internal server error',
-                errorId // Für Support-Tickets
+                error: error.message.includes('timeout') ? 'Service timeout - please try again' : 'Internal server error',
+                errorId
             })
         };
     }
