@@ -28,12 +28,12 @@ function sanitizeInput(text) {
     return sanitized;
 }
 
-// 🚀 CLAUDE 3.5 HAIKU - ULTRA FAST & RELIABLE
-async function callClaudeHaikuAPI(prompt) {
-    console.log('🔵 Calling Claude 3.5 Haiku (ultra-fast)...');
+// 🚀 CLAUDE SONNET 4 - PREMIUM QUALITY & ADVANCED REASONING
+async function callClaudeSonnet4API(prompt) {
+    console.log('🔵 Calling Claude Sonnet 4 (premium quality)...');
     
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 8000); // 8s - generous for Haiku
+    const timeoutId = setTimeout(() => controller.abort(), 9000); // 9s - under Netlify's 10s limit
     
     try {
         const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -44,8 +44,8 @@ async function callClaudeHaikuAPI(prompt) {
                 'anthropic-version': '2023-06-01'
             },
             body: JSON.stringify({
-                model: 'claude-3-5-haiku-20241022', // 🚀 HAIKU = 2x faster!
-                max_tokens: 500, // Increased for detailed FINE TO DINE style
+                model: 'claude-sonnet-4-20250514', // 🚀 CORRECT Sonnet 4 model name!
+                max_tokens: 800, // Increased for sophisticated FINE TO DINE style
                 messages: [{ role: 'user', content: prompt }]
             }),
             signal: controller.signal
@@ -55,11 +55,11 @@ async function callClaudeHaikuAPI(prompt) {
 
         if (!response.ok) {
             const errorText = await response.text().catch(() => 'Unknown error');
-            console.error('Claude Haiku API Error:', response.status, errorText);
+            console.error('Claude Sonnet 4 API Error:', response.status, errorText);
             throw new Error(`Claude API Error: ${response.status}`);
         }
 
-        console.log('🟢 Claude 3.5 Haiku success (ultra-fast!)');
+        console.log('🟢 Claude Sonnet 4 success (premium quality!)');
         return response;
         
     } catch (error) {
@@ -118,7 +118,7 @@ exports.handler = async (event, context) => {
         const { magazinText } = JSON.parse(event.body);
         const sanitizedText = sanitizeInput(magazinText);
 
-        console.log('🚀 Using Claude 3.5 Haiku with 2025 best practices:', {
+        console.log('🚀 Using Claude Sonnet 4 with 2025 best practices:', {
             timestamp: new Date().toISOString(),
             inputLength: sanitizedText.length
         });
@@ -207,8 +207,8 @@ LÄNGE: Mindestens 5-6 substantielle, detailreiche Sätze für Magazin-Qualität
 ${sanitizedText}
 </document>`;
 
-        // Ultra-fast Haiku API call
-        const response = await callClaudeHaikuAPI(prompt);
+        // Premium Sonnet 4 API call
+        const response = await callClaudeSonnet4API(prompt);
         const data = await response.json();
         const rawContent = data.content[0].text;
 
@@ -218,7 +218,7 @@ ${sanitizedText}
             body: JSON.stringify({ 
                 success: true, 
                 content: rawContent,
-                model: 'claude-3-5-haiku-20241022',
+                model: 'claude-sonnet-4-20250514',
                 timestamp: new Date().toISOString(),
                 remaining: rateLimitResult.headers['X-RateLimit-Remaining']
             })
@@ -227,7 +227,7 @@ ${sanitizedText}
     } catch (error) {
         const errorId = Date.now().toString(36) + Math.random().toString(36).substr(2);
         
-        console.error('Haiku generation error:', {
+        console.error('Sonnet 4 generation error:', {
             errorId,
             message: error.message,
             timestamp: new Date().toISOString()

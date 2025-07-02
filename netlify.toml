@@ -4,11 +4,16 @@
 [functions]
   node_bundler = "esbuild"
 
+# Netlify Functions Timeout Limits (Accurate as of 2025):
+# - Free Plan: 10 seconds (default)
+# - Pro Plan: 26 seconds (max, on request)
+# - Enterprise: Custom timeouts available
+
 [functions.generate]
-  timeout = 30
+  timeout = 10  # Max for free plan - Sonnet 4 must complete in <9s
 
 [functions.format]
-  timeout = 10
+  timeout = 5   # Fast Unicode formatting only
 
 [[headers]]
   for = "/.netlify/functions/*"
