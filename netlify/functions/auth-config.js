@@ -1,5 +1,5 @@
 exports.handler = async (event, context) => {
-    const allowedOrigin = process.env.ALLOWED_ORIGIN || 'https://f2d-poster-generator.netlify.app';
+    const allowedOrigin = process.env.ALLOWED_ORIGIN
     
     const headers = {
         'Access-Control-Allow-Origin': allowedOrigin,
