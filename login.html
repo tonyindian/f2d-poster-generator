@@ -81,10 +81,10 @@
     <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
     <script type="module">
         // Modern ES2025 Auth0 Integration
-        // 🔒 Secure Auth Manager - Config vom Server laden
+        // 🔒 Secure Auth Manager - Config from Server
         class SecureAuthManager {
             #auth0Client = null;
-            #config = null;
+            #config = null;  // Will be loaded from server
             
             constructor() {
                 this.#loadSecureConfig();
@@ -93,14 +93,16 @@
             
             async #loadSecureConfig() {
                 try {
+                    console.log('🔐 Loading secure config from server...');
                     const response = await fetch('/.netlify/functions/auth-config');
                     if (!response.ok) throw new Error('Config load failed');
                     
                     this.#config = await response.json();
+                    console.log('✅ Secure config loaded');
                     await this.#initializeAuth();
                 } catch (error) {
                     this.#showError('Konfiguration konnte nicht geladen werden.');
-                    console.error('Config loading failed:', error);
+                    console.error('❌ Config loading failed:', error);
                 }
             }
             
@@ -120,6 +122,7 @@
                     console.error('Auth0 initialization failed:', error);
                 }
             }
+
             
             #bindEvents() {
                 const loginButton = document.getElementById('loginButton');

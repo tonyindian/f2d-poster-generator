@@ -144,10 +144,11 @@
     <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
     <script type="module">
         // 🔒 FIXED Secure Protected App - Claude 3.7 Sonnet Compatible
+        // 🔒 FIXED Secure Protected App - No Hardcoded Credentials
         class SecureProtectedApp {
             #auth0Client = null;
             #user = null;
-            #config = null;
+            #config = null;  // Will be loaded from server
             #csrfToken = null;
 
             constructor() {
@@ -157,13 +158,15 @@
 
             async #loadSecureConfig() {
                 try {
+                    console.log('🔐 Loading secure config from server...');
                     const response = await fetch('/.netlify/functions/auth-config');
                     if (!response.ok) throw new Error('Config load failed');
                     
                     this.#config = await response.json();
+                    console.log('✅ Secure config loaded');
                     await this.#initializeAuth();
                 } catch (error) {
-                    console.error('Config loading failed:', error);
+                    console.error('❌ Config loading failed:', error);
                     this.#redirectToLogin();
                 }
             }
@@ -211,6 +214,7 @@
                     this.#redirectToLogin();
                 }
             }
+
 
             async #loadCSRFToken() {
                 try {

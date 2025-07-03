@@ -1,6 +1,8 @@
 exports.handler = async (event, context) => {
+    const allowedOrigin = process.env.ALLOWED_ORIGIN || 'https://f2d-poster-generator.netlify.app';
+    
     const headers = {
-        'Access-Control-Allow-Origin': process.env.ALLOWED_ORIGIN || 'https://f2d-poster-generator.netlify.app',
+        'Access-Control-Allow-Origin': allowedOrigin,
         'Access-Control-Allow-Headers': 'Content-Type',
         'Access-Control-Allow-Methods': 'GET, OPTIONS',
         'Cache-Control': 'public, max-age=300'
@@ -19,12 +21,16 @@ exports.handler = async (event, context) => {
     }
 
     try {
-        // Domain-Validation entfernt für jetzt
+        // Validate required environment variables
+        if (!process.env.AUTH0_DOMAIN || !process.env.AUTH0_CLIENT_ID) {
+            throw new Error('Missing required Auth0 configuration');
+        }
+
         const config = {
             domain: process.env.AUTH0_DOMAIN,
             clientId: process.env.AUTH0_CLIENT_ID,
             authorizationParams: {
-                redirect_uri: `${process.env.ALLOWED_ORIGIN}/app/`
+                redirect_uri: `${allowedOrigin}/app/`
             },
             cacheLocation: 'localstorage',
             useRefreshTokens: true
